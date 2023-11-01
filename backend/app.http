@@ -25,16 +25,29 @@ Content-Type: application/json
 #get all user
 
 get http://localhost:4600/user/
-
-#not able to get all users unless you produce the token
-# token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3MWU0OWQ3Mi0yNjIyLTRiZWItOTQxYy1kMDZiZGJkZjhkMzciLCJ1c2VyTmFtZSI6Ik1pY2hhZWwgT3RpZW5vIiwiZW1haWwiOiJtaWNoZWFsdmVudW0wMDdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsIkFzc2lnbmVkUHJvamVjdElEIjpudWxsLCJFbWFpbFNlbnQiOmZhbHNlLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE2OTg4MzQ2OTgsImV4cCI6MTY5ODgzODI5OH0.1AcUnsrU1y7VgSAIOR5VJXX-v4XAf8NfwWjJa3YyZYU
+token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3MWU0OWQ3Mi0yNjIyLTRiZWItOTQxYy1kMDZiZGJkZjhkMzciLCJ1c2VyTmFtZSI6Ik1pY2hhZWwgT3RpZW5vIiwiZW1haWwiOiJtaWNoZWFsdmVudW0wMDdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsIkFzc2lnbmVkUHJvamVjdElEIjpudWxsLCJFbWFpbFNlbnQiOmZhbHNlLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTg4NDg4ODEsImV4cCI6MTY5ODg1MjQ4MX0.wopU80FomBiJMyfNSTX6leJTiu7nw6Ud3ZGi_7MJst0
 
 
 ###
 #admin asign project
-post http://localhost:4600/user/assignProject
+POST http://localhost:4600/project/assignProject
 Content-Type: application/json
 
 {
     
+    "projectName": "Sample Project3",
+    "projectDescription": "This is a test project",
+    "endDate": "2023-12-31",
+    "AssignedUserEmail": "mikevenum9@gmail.com",  
+    "AssignedUserName": "Michael Otieno"  
+}
+
+###
+DELETE  http://localhost:4600/project/deleteProject
+Content-Type: application/json
+
+{
+   
+    "projectID":"ee601302-03e2-430a-aad2-aeb87deadf10",
+    "userRole":"admin"
 }

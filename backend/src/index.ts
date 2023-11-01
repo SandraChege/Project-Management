@@ -1,6 +1,7 @@
 import express, { json } from 'express'
 import dotenv from 'dotenv'
 import user_router from './routes/userRoutes'
+import project_router from './routes/projectRoutes'
 
 
 
@@ -11,6 +12,7 @@ app.use(json())
 
 
 app.use('/user',user_router)
+app.use('/project',project_router)
 
 
 

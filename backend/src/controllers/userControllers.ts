@@ -119,22 +119,4 @@ export const getAllUsers = async (req:Request,res:Response)=>{
     }
 }
 
-//admin asigns projects
-export const asignProject = async (req:Request,res:Response)=>{
-    try {
-        const pool = await mssql.connect(sqlConfig)
-
-        let {projectName,projectDescription,endDate,AssignedUserID,AssignedUser} = req.body
-       
-       //joi validation
-       
-        let projectID = v4()
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            message:error
-        })
-        
-    }
-}
 
