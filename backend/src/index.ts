@@ -1,14 +1,17 @@
 import express, { json } from 'express'
 import dotenv from 'dotenv'
-// import user_router from './routes/userRoutes';
+import user_router from './routes/userRoutes'
+
 
 
 dotenv.config()
-const port = process.env.PORT || 3500
+const port = process.env.PORT || 4500
 const app = express()
 app.use(json())
 
-// app.use('/user',user_router)
+
+app.use('/user',user_router)
+
 
 
 app.listen(port,()=>{
