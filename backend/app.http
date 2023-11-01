@@ -1,0 +1,40 @@
+post http://localhost:4600/user/register
+Content-Type: application/json
+
+{
+    "userName":"Michael Otieno",
+    "email":"mikevenum9@gmail.com",
+    "password":"379226",
+    "phone_no":"0703142454"
+}
+
+
+###
+#login user
+POST http://localhost:4600/user/login
+Content-Type: application/json
+
+{
+    "email":"michealvenum007@gmail.com",
+    "password":"379226"
+
+}
+
+
+###
+#get all user
+
+get http://localhost:4600/user/
+
+#not able to get all users unless you produce the token
+# token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3MWU0OWQ3Mi0yNjIyLTRiZWItOTQxYy1kMDZiZGJkZjhkMzciLCJ1c2VyTmFtZSI6Ik1pY2hhZWwgT3RpZW5vIiwiZW1haWwiOiJtaWNoZWFsdmVudW0wMDdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsIkFzc2lnbmVkUHJvamVjdElEIjpudWxsLCJFbWFpbFNlbnQiOmZhbHNlLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE2OTg4MzQ2OTgsImV4cCI6MTY5ODgzODI5OH0.1AcUnsrU1y7VgSAIOR5VJXX-v4XAf8NfwWjJa3YyZYU
+
+
+###
+#admin asign project
+post http://localhost:4600/user/assignProject
+Content-Type: application/json
+
+{
+    
+}
