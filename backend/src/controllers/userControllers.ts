@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import { v4 } from "uuid";
 import { sqlConfig } from "../config/sqlConfig";
 import { userLoginValidationSchema, userRegisterValidationSchema } from "../validators/userValidators";
+import { ExtendedUser } from "../middleware/tokenVerify";
 
 
 //register user
@@ -33,6 +34,11 @@ export const registerUser = async(req:Request,res:Response)=>{
         .execute('registerUser')
 
         console.log(data);
+        if(error){
+            res.json({
+                message:error
+            })
+        }
         
         return res.status(200).json({
             message:'User registered successfully'
@@ -115,6 +121,15 @@ export const getAllUsers = async (req:Request,res:Response)=>{
         console.error(error);
         return res.status(500).json({
             message:error
+        })
+    }
+}
+
+//checkUser Details
+export const checkUserDetails = async (req:ExtendedUser, res:Response)=>{
+    if(req.info){
+        return res.json({
+            info: req.info
         })
     }
 }

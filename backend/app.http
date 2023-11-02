@@ -29,17 +29,24 @@ token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3MWU0OWQ3Mi0yNjIyLTR
 
 
 ###
+#check user details
+GET http://localhost:4600/user/check_user_details
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3MWU0OWQ3Mi0yNjIyLTRiZWItOTQxYy1kMDZiZGJkZjhkMzciLCJ1c2VyTmFtZSI6Ik1pY2hhZWwgT3RpZW5vIiwiZW1haWwiOiJtaWNoZWFsdmVudW0wMDdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsIkFzc2lnbmVkUHJvamVjdElEIjpudWxsLCJFbWFpbFNlbnQiOmZhbHNlLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTg4NzU0NTIsImV4cCI6MTY5ODg3OTA1Mn0.qsQi-r_jZVoAihToyO2HRNOOEZttROjDuBWIm1-lofA
+
+
+
+###
 #admin asign project
 POST http://localhost:4600/project/assignProject
 Content-Type: application/json
 
 {
     
-    "projectName": "Sample Project3",
-    "projectDescription": "This is a test project",
-    "endDate": "2023-12-31",
-    "AssignedUserEmail": "mikevenum9@gmail.com",  
-    "AssignedUserName": "Michael Otieno"  
+    "projectName": "BackgroundSerices",
+    "projectDescription": "Develop backend for project Management System",
+    "endDate": "2023-11-3",
+    "AssignedUserEmail": "cylvonnen@gmail.com",  
+    "AssignedUserName": "Joshua Ochieng"  
 }
 
 ###
@@ -51,3 +58,23 @@ Content-Type: application/json
     "projectID":"ee601302-03e2-430a-aad2-aeb87deadf10",
     "userRole":"admin"
 }
+
+
+###
+#get all projects
+get  http://localhost:4600/project/
+
+###
+#get single project
+get  http://localhost:4600/project/singleProject
+Content-Type: application/json
+
+{
+   
+    "AssignedUserEmail":"mikvenu9@gmail.com"
+   
+}
+
+
+
+
