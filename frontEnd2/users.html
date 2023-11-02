@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="./css/user.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="company">
+            <img src="https://st4.depositphotos.com/20523700/25935/i/450/depositphotos_259350398-stock-photo-illustration-h2o-icon.jpg" alt="Company Logo">
+            <h1>World Waters</h1>
+            <p>Safe Water</p>
+            <p>Contact Information:WorldWater@company.com</p>
+            <h1 style="font-size: xx-large; line-height: 2;">Water<br> Project <br> Management <br>System</h1>
+        </div>
+        <div class="dashboard">
+            <div class="nav">
+                <div class="date">
+                    <p id="dateDisplay">Date</p>
+                </div>
+                
+                
+                <div class="accountIcon">
+                    <div class="accountDropdown">
+                        <a href="#">User</a>
+                        <div class="dropdown-content">
+                            <a href="#">Profile</a>
+                            <a href="index.html">Logout</a>
+                        </div>
+                    </div>
+                    <div><ion-icon name="person-circle-outline"></ion-icon></div>
+                </div>
+            </div>
+            <div class="projectBoard">
+                <h2>User Dashboard</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h2 style="color: blue;">Completed</h2>
+                        <ul>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h2 style="color: blue;">Uncompleted</h2>
+                        <ul>
+                            <li>Task 4</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+                            <li>Task 1</li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="projectContainer">
+                <div class="projectList">
+                    <div class="projectListHeader">
+                        <h2 style="color: blue;">Assigned Project</h2>
+                        <button class="viewProjectButton" id="viewProjectButton">View Project</button>
+                    </div>
+                    <div class="projectItems">
+                        <div class="projectItem">
+                            <span>Project 1</span>
+                            <div class="buttonContainer">
+                                <button class="submitTaskButton"><i class="fas fa-paper-plane"></i></button>
+
+                            </div>
+
+                        </div>
+                       
+                      
+                    </div>
+                </div>
+            </div>
+
+            <div class="background-overlay" id="backgroundOverlay"></div>
+            <div class="projectInfo" id="projectInfo" style="display: none;">
+
+
+
+        </div>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+<script>
+   function updateDate() {
+    const dateElement = document.getElementById("dateDisplay");
+    const now = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = now.toLocaleDateString('en-US', options);
+    dateElement.textContent = formattedDate;
+}
+updateDate();
+setInterval(updateDate, 24 * 60 * 60 * 1000);
+
+
+</script>
+<script src="./dist/users.js"></script>
+
+</html>
