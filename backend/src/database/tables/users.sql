@@ -1,7 +1,15 @@
--- -- -- -- create DATABASE Project_Management
--- -- -- -- alter database Project_Management MODIFY name  = projectManagementSystem
--- -- -- -- use projectManagementSystem
+-- create DATABASE Project_Management
+-- alter database Project_Management MODIFY name  = projectManagementSystem
+use projectManagementSystem
 
+-- SELECT name
+-- FROM sys.databases
+
+-- SELECT table_name, table_schema, table_type FROM information_schema.tables
+
+-- sp_help
+
+-- DROP DATABASE projectManagementSystem
 
 -- CREATE TABLE Users (
 --     userID VARCHAR(300) not null PRIMARY KEY,

@@ -1,11 +1,12 @@
+###
 post http://localhost:4600/user/register
 Content-Type: application/json
 
 {
-    "userName":"Michael Otieno",
-    "email":"mikevenum9@gmail.com",
-    "password":"379226",
-    "phone_no":"0703142454"
+    "userName":"Sandra Chege",
+    "email":"sandra.chege@thejitu.com",
+    "password":"385226",
+    "phone_no":"0703142444"
 }
 
 
@@ -15,8 +16,8 @@ POST http://localhost:4600/user/login
 Content-Type: application/json
 
 {
-    "email":"michealvenum007@gmail.com",
-    "password":"379226"
+    "email":"sandra.chege@thejitu.com",
+    "password":"385226"
 
 }
 
@@ -25,9 +26,7 @@ Content-Type: application/json
 #get all user
 
 get http://localhost:4600/user/
-
-#not able to get all users unless you produce the token
-# token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3MWU0OWQ3Mi0yNjIyLTRiZWItOTQxYy1kMDZiZGJkZjhkMzciLCJ1c2VyTmFtZSI6Ik1pY2hhZWwgT3RpZW5vIiwiZW1haWwiOiJtaWNoZWFsdmVudW0wMDdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsIkFzc2lnbmVkUHJvamVjdElEIjpudWxsLCJFbWFpbFNlbnQiOmZhbHNlLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE2OTg4MzQ2OTgsImV4cCI6MTY5ODgzODI5OH0.1AcUnsrU1y7VgSAIOR5VJXX-v4XAf8NfwWjJa3YyZYU
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI5MmNhNThjZC1mNTEwLTRhZTYtYjBmNC0zNGE3NDExNTczYmMiLCJ1c2VyTmFtZSI6IlNhbmRyYSBDaGVnZSIsImVtYWlsIjoic2FuZHJhLmNoZWdlQHRoZWppdHUuY29tIiwiaXNBZG1pbiI6ZmFsc2UsIkFzc2lnbmVkUHJvamVjdElEIjpudWxsLCJFbWFpbFNlbnQiOmZhbHNlLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE2OTg4NDkxNzgsImV4cCI6MTY5ODg1Mjc3OH0.4FzO7PpVhg6GBdD3JeHFqLIJgRIJUNbJQF7jfFmDUlU
 
 
 ###
