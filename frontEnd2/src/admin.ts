@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const projectInfo = document.getElementById('projectInfo') as HTMLDivElement;
     const formContainer = document.getElementById('formContainer') as HTMLDivElement;
     const addTaskButton = document.getElementById('addTaskButton') as HTMLButtonElement;
+    // const deleteTaskBUtton = document.getElementById('deleteTaskButton') as HTMLButtonElement;
 
 
 
@@ -59,6 +60,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 //assign task
                 addTaskButton.addEventListener('click', (e) => {
+                    e.preventDefault();
                     formContainer.style.display = 'block'
                     const backgroundOverlay = document.getElementById('backgroundOverlay') as HTMLDivElement;
                     backgroundOverlay.style.display = 'block';
@@ -87,14 +89,10 @@ window.addEventListener('DOMContentLoaded', () => {
                         let AssignedUserName = employee_name.value.trim();
                         let AssignedUserEmail = employee_email.value.trim();
                         
-                       
-
                         if (AssignedUserName === '' || AssignedUserEmail === '' || projectDetails === '' || endDate === '' || projectName === '') {
                             assignError.textContent = 'please fill all fields'
                             return;
                         }
-
-                      
 
                         try {
                             const response = await fetch('http://localhost:4600/project/assignProject', {
@@ -127,20 +125,8 @@ window.addEventListener('DOMContentLoaded', () => {
                             console.log(message);
 
                             console.error("An error occurred during project assignment:", error);
-
-
                         }
                     });
-
-                    function gotoLogin() {
-                        location.href = 'admin.html';
-                    }
-
-
-
-
-
-
 
                 })
 
@@ -193,7 +179,53 @@ window.addEventListener('DOMContentLoaded', () => {
                         projectInfo.style.display = 'none';
                         backgroundOverlay.style.display = 'none';
                     });
+
+                      //delete project
+                      deleteTaskButton.addEventListener('click',async (e)=>{
+                        e.preventDefault();
+                        alert('do you want to delete the project')
+                        const deleteID = project.projectID
+                        console.log(`this is it${deleteID}`);
+                        
+                        const userRole = 'admin'
+
+                        try {
+                            const response = await fetch('http://localhost:4600/project/deleteProject', {
+                                method: "DELETE",
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    "deleteID":deleteID,
+                                    "userRole":userRole
+                                })
+                            });
+
+                            if (response.ok) {
+                                
+                                console.log("deleted");
+                                
+                            } else {
+                                const errorData = await response.json();
+                                console.log("Project deletion failed. Server returned:", errorData);
+                                // assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`
+                            }
+                            
+                        } catch (error) {
+                            console.error
+                            
+                        }
+                      })
+
+
+
+
+
                 });
+
+              
+
 
 
 
