@@ -1,10 +1,14 @@
 import express from "express";
 import { welcomeUser } from "./mailServices/welcomeuser";
+import cron from "node-cron";
 
 const app = express();
 
-const run =async () => {
-    await welcomeUser()
+const run = async () => {
+    cron.schedule('*/10*****',async () => {
+       console.log("Checking for new user"); 
+        await welcomeUser();
+    })
 }
 
 run()

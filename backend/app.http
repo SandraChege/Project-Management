@@ -3,10 +3,10 @@ post http://localhost:4600/user/register
 Content-Type: application/json
 
 {
-    "userName":"Sandra Chege",
-    "email":"sandra.chege@thejitu.com",
-    "password":"385226",
-    "phone_no":"0703142444"
+    "userName":" Daniel Kakinyi ",
+    "email":"dankinyi99@gmail.com",
+    "password":"9855663",
+    "phone_no":"0797692749"
 }
 
 
@@ -16,8 +16,8 @@ POST http://localhost:4600/user/login
 Content-Type: application/json
 
 {
-    "email":"sandra.chege@thejitu.com",
-    "password":"385226"
+    "email":"jennifer.sammy@thejitu.com",
+    "password":"3555666"
 
 }
 
@@ -26,7 +26,7 @@ Content-Type: application/json
 #get all user
 
 get http://localhost:4600/user/
-token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI5MmNhNThjZC1mNTEwLTRhZTYtYjBmNC0zNGE3NDExNTczYmMiLCJ1c2VyTmFtZSI6IlNhbmRyYSBDaGVnZSIsImVtYWlsIjoic2FuZHJhLmNoZWdlQHRoZWppdHUuY29tIiwiaXNBZG1pbiI6ZmFsc2UsIkFzc2lnbmVkUHJvamVjdElEIjpudWxsLCJFbWFpbFNlbnQiOmZhbHNlLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE2OTg4NDkxNzgsImV4cCI6MTY5ODg1Mjc3OH0.4FzO7PpVhg6GBdD3JeHFqLIJgRIJUNbJQF7jfFmDUlU
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3ZTY5NDM1Zi0yOWIwLTRjMDYtOTcxZi1mNzYyMDhlNDlkNjEiLCJ1c2VyTmFtZSI6Ikplbm5pZmVyIiwiZW1haWwiOiJqZW5uaWZlci5zYW1teUB0aGVqaXR1LmNvbSIsImlzQWRtaW4iOmZhbHNlLCJBc3NpZ25lZFByb2plY3RJRCI6bnVsbCwiRW1haWxTZW50IjpmYWxzZSwicm9sZSI6ImVtcGxveWVlIiwiV2VsY29tZWQiOmZhbHNlLCJpYXQiOjE2OTg5MTk4NjksImV4cCI6MTY5ODkyMzQ2OX0.qBDg5Qk_hlM_udrEppxoKJZoziTmROYfZbJUOs9eDs4
 
 
 ###

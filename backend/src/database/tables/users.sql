@@ -21,9 +21,10 @@ use projectManagementSystem
 --     EmailSent BIT  DEFAULT 0,
 --     phone_no VARCHAR (250) UNIQUE,
 --     role varchar(20) DEFAULT 'employee',
+--     Welcomed BIT  DEFAULT 0,
 -- );
 -- -- -- -- select * from Users
--- -- -- drop table Users
+--  drop table Users
 
 --created the admin
 -- update Users 

@@ -29,9 +29,7 @@ export const welcomeUser =async () => {
                 /**
                  * change state of receiving email
                  */
-                // await pool
-                // .request()
-                // .query("UPDATE Employees SET welcomed = 1 WHERE welcomed = 0");
+                // await pool.request().query("UPDATE Users SET Welcomed = 1 WHERE Welcomed = 0");
 
               console.log("Emails send to new users");
             } catch (error) {
