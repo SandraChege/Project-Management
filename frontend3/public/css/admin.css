@@ -127,6 +127,9 @@
     padding-right: 5px;
 }
 
+
+
+
 /* projects */
 
 .projectItems{
@@ -175,14 +178,15 @@
     z-index: 1000;
     max-width: 80%;
     width: 400px; 
+  
 }
 
-.closeButton {
+#closeProjectForm {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 24px;
+    top: 0px;
+    right: 0px;
+    cursor: grabbing;
+    font-size: 10px;
     color: #888;
 }
 
@@ -244,10 +248,11 @@ input {
 
 
 
-button {
+.formSubmit {
     padding: 10px 56px;
     background-color: rgb(35, 35, 235);
     /* background-color: rgb(73, 72, 72); */
+    margin: 20px;
     color: white;
     border-radius: 5px;
     border: solid gray 1px;
