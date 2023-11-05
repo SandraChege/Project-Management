@@ -1,6 +1,12 @@
 
 -- -- use projectManagementSystem
+-- select * from Projects
 -- -- drop procedure assignProject
+-- delete from Projects
+-- where  AssignedUserEmail = 'cylvonnen@gmail.com'
+
+
+
 -- CREATE PROCEDURE assignProject
 --     @projectID VARCHAR(300),
 --     @projectName VARCHAR(250),
@@ -42,5 +48,5 @@
 --     END
 -- END
 
-
+-- 
 

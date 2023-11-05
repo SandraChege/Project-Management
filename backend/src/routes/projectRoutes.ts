@@ -1,5 +1,5 @@
 import Router from "express";
-import { assignProject, deleteProject, getAllProjects, singleProject } from "../controllers/projectControllers";
+import { assignProject, deleteProject, getAllProjects, getAllUsers, projectCompleted, singleProject } from "../controllers/projectControllers";
 
 
 
@@ -9,6 +9,8 @@ project_router.post('/assignProject',assignProject)
 project_router.delete('/deleteProject',deleteProject)
 project_router.get('/',getAllProjects)
 project_router.get('/singleProject',singleProject)
+project_router.post('/updateProject',projectCompleted)
+project_router.get('/getUsers',getAllUsers)
 
 
 export default project_router

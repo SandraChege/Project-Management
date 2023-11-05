@@ -15,7 +15,8 @@ select * from Users
 --     role varchar(20) DEFAULT 'employee',
 --     Welcomed bit DEFAULT 0,
 -- );
-
+alter table Users
+drop COLUMN AssignedProjectID
 
 -- -- -- --  
 -- -- -- drop table Users

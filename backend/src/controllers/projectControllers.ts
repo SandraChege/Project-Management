@@ -9,14 +9,14 @@ import { projectAssignmentValidationSchema } from '../validators/projectValidato
 // Admin assigns projects
 export const assignProject = async (req: Request, res: Response) => {
     try {
-        let { projectName, projectDescription, endDate, AssignedUserEmail, AssignedUserName } = req.body;
+        
+        let {projectName, projectDescription, endDate, AssignedUserEmail, AssignedUserName } = req.body;
 
         const { error } = projectAssignmentValidationSchema.validate(req.body);
 
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
-
         let projectID = v4();
 
         const pool = await mssql.connect(sqlConfig);
@@ -54,33 +54,20 @@ export const assignProject = async (req: Request, res: Response) => {
 //delete project
 export const deleteProject = async (req:Request, res:Response) => {
     try {
-        const { projectID, userRole } = req.body;
-
-        if (!userRole || userRole !== 'admin') {
-            return res.status(403).json({
-                message: "Unauthorized user"
-            });
-        }
-
+        const { deleteID } = req.body;
+        
         const pool = await mssql.connect(sqlConfig);
         const result = await pool.request()
-            .input("projectID", mssql.VarChar, projectID)
-            .input("userRole", mssql.VarChar, userRole)
+            .input("projectID", mssql.VarChar, deleteID)
             .execute("deleteProject");
 
         if (result.recordset[0].DeletionResult === 1) {
             return res.status(200).json({
                 message: "Project deleted successfully."
             });
-        } else if (result.recordset[0].DeletionResult === -1) {
-            return res.status(403).json({
-                message: "Unauthorized"
-            });
-        } else if (result.recordset[0].DeletionResult === -2) {
-            return res.status(404).json({
-                message: "Project with the provided ID does not exist."
-            });
-        }
+        }  else {      
+                console.log( "Project with the provided ID does not exist");   
+            }
 
     } catch (error) {
         return res.status(500).json({
@@ -120,8 +107,6 @@ export const singleProject = async(req:Request,res:Response)=>{
        .execute("getSingleProject")
        console.log(project);
        
-
-
        return res.status(200).json({
         message:"project retrieved successfully"
     })
@@ -134,4 +119,36 @@ export const singleProject = async(req:Request,res:Response)=>{
     }
 }
 
+//Mark project Completed
+export const projectCompleted = async(req:Request,res:Response)=>{
+    try {
+        const {projectID} = req.body
+        const pool = await mssql.connect(sqlConfig)
+        const completedProject = await pool.request()
+        .input("projectID",mssql.VarChar,projectID)
+        .execute("projectCompleted");
+        console.log(completedProject);
+
+        return res.status(500).json({
+            message:"project update successfully"
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            message:error
+        })
+        
+    }
+}
+//fetchALl Users
+export const getAllUsers = async (req:Request, res:Response) => {
+    try {
+        const pool = await mssql.connect(sqlConfig);
+        const allUsers = await pool.request().execute('GetAllUsers'); 
+        res.json(allUsers.recordset);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
