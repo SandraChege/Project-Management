@@ -124,7 +124,7 @@
 }
 /* PROJECTS */
 .projectItems{
-    border: solid rgb(0, 81, 255) 2px;
+    /* border: solid rgb(0, 81, 255) 2px; */
     display: flex;
     height: 72vh;
     width: 80vw;
