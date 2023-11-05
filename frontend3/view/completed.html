@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../public/css/admin1.css">
+    <link rel="stylesheet" href="../public/css/completed.css">
 </head>
+
 <body>
-     <div class="container">
+    <div class="container">
         <div class="company">
             <h1>World Waters</h1>
             <div>
@@ -25,32 +27,57 @@
                 </div>
                 <div class="accountIcon">
                     <div class="accountDropdown">
-                        <a href="#">User</a>
+                        <a href="#">Admin</a>
                         <div class="dropdown-content">
                             <a href="#">Profile</a>
-                            <a href="../view/signin.html">Logout</a>
+                            <a href="../index.html">Logout</a>
                         </div>
                     </div>
                     <div><ion-icon class="p-icon" name="person-circle-outline"></ion-icon></div>
                 </div>
             </div>
             <div class="projectBoard">
-                <h2>Completed Projects</h2>
-                <div class="cards">
-                    <div class="card">
-                        <ul id="completed">
+                <h2>Project Dashboard</h2>
 
-                        </ul>
-                    </div>
-                </div>
 
             </div>
+
+            <!-- complete project  -->
+            <div class="background-overlay" id="backgroundOverlay"></div>
+            <div id="confirmationModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>Are you sure you want to mark this project as completed?</p>
+                    <div class="buttonComplete">
+
+                    </div>
+                    <button id="noButton" class="completeButton">No</button>
+                    <button id="yesButton" class="completeButton">Yes</button>
+                </div>
+            </div>
+
+            <div class="projectContainer">
+
+                <div class="projectList">
+                    <div class="projectListHeader">
+                        <h2 style="color: black; text-align: center;">Completed Projects</h2>
+
+                    </div>
+                    <div class="projectItems" id="projectItems">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="background-overlay" id="backgroundOverlay"></div>
+            <div class="projectInfo" id="projectInfo" style="display: none;">
+
+            </div>
+
         </div>
     </div>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
-</html>
 <script>
     function updateDate() {
         const dateElement = document.getElementById("dateDisplay");
@@ -61,4 +88,9 @@
     }
     updateDate();
     setInterval(updateDate, 24 * 60 * 60 * 1000);
+
+
 </script>
+<script src="../dist/completed.js"></script>
+
+</html>
