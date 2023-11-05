@@ -107,6 +107,18 @@ Content-Type: application/json
    
 }
 
+###
+#get project status
+get http://localhost:4600/project/getStatus
+Content-Type: application/json
+
+{
+   
+    "AssignedUserEmail":"dankinyi99@gmail.com"
+   
+}
+
+
 
 
 
