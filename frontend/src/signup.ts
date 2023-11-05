@@ -9,7 +9,7 @@ let reg_form = document.getElementById("signup-form") as HTMLFormElement;
 
 reg_form.addEventListener('submit', async (event) => {
     event.preventDefault();
-
+    console.log("PART1");
     let userName = full_name.value.trim();
     let email = user_email.value.trim();
     let phone_no = phone.value.trim();

@@ -17,6 +17,7 @@ let registerError = document.getElementById('response');
 let reg_form = document.getElementById("signup-form");
 reg_form.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
+    console.log("PART1");
     let userName = full_name.value.trim();
     let email = user_email.value.trim();
     let phone_no = phone.value.trim();

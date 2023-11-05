@@ -1,142 +1,155 @@
-/* cards */
-h2 {
-    margin: 10px;
-}
-
-.projectBoard {
-    background-color: rgb(224, 224, 224);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
-    margin: 10px 25px;
-}
-
-.cards {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.card {
-    border: 1px solid #ccc;
-    padding: 20px;
-    width: 280px;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-height: 100px;
-    overflow-y: auto;
-    border-radius: 5px;
-    border-left: solid thick #000fff;
-}
-
-
-.card h2 {
-    font-size: 1.2em;
-    margin: 10px 0;
-}
-
-.card ul {
-    list-style: none;
-
-}
-
-.card li {
-    margin: 5px 0;
-
-}
-
-
-/* projects */
-.projectContainer {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    /* border: solid green 2px; */
-    margin: 3%;
-    overflow: auto;
-    border-radius: 10px;
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
-    background-color: rgb(224, 224, 224);
-}
-
-.projectList {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 90%;
-    background-color: #fff;
-    height: 230px;
-    overflow-y: auto;
-}
-
-.projectListHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* border: solid grey 2px; */
-}
-
-.addTaskButton {
-    background-color: #000fff;
-    color: #fff;
-    border: none;
-    padding: 10px 8px;
-    cursor: pointer;
-    margin-right: 5px;
-    font-size: large;
-}
-
-.projectItems {
-    margin-top: 10px;
-}
-
-.projectItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 5px;
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
-    /* border: solid gray 1px; */
-    height: 50px;
-}
-
-input[type="checkbox"] {
-    margin-right: 10px;
-
-}
-
-input.checkboxx {
-    width: 20px;
-    height: 20px;
-    margin: 0px 5px;
-}
-
-
-.buttonContainer {
-    margin-right: 10px;
-    font-size: 30px;
-}
-
-.deleteTaskButton,
-.editTaskButton {
-    margin: 0px 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: gray;
-    background-color: transparent;
+* {
     padding: 0;
+    margin: 0;
+}
+:root{
+    --beige:#DDD0C8;
+    --darkgrey:#323232;
+    --white:#fff;
+    --black:#000;
+}
+
+/* main container */
+.container {
+    display: grid;
+    grid-template-areas: 'company dashboard';
+    grid-template-rows: 1fr;
+    grid-template-columns: 15%  85%;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* company info */
+.company {
+    grid-area: company;
+    background-color: var(--darkgrey);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.company h1{
+    font-size: 2rem;
+}
+.company div{
+    margin-top: 3rem;
+}
+.company div button{
+    margin-top: 2rem;
+    background-color: var(--darkgrey);
+    border: none;
     outline: none;
 }
-
-.editTaskButton {
-    color: #007bff;
-    margin-left: 5px;
+.company div button a{
+    color: var(--white);
+    text-decoration: none;
 }
-
-
-/* project Info */
+/* right side */
+.dashboard{
+    grid-area: dashboard;
+    background-color: var(--beige);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+.dashboard .nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.dashboard .nav .date{
+    font-size: 1.3rem;
+}
+.dashboard .accountIcon{
+    display: flex;
+    flex-direction: row-reverse;
+    padding-right: 10px;
+}
+.dashboard .accountIcon .p-icon{
+    font-size: 40px;
+}
+.dashboard .accountIcon .accountDropdown a{
+    text-decoration: none;
+    font-size: 1.3rem;
+    color: var(--black);
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--beige);
+    width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-left: -50px;
+    margin-top: 10px;
+}
+.accountDropdown:hover .dropdown-content {
+    display: block;
+    width: auto;
+}
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: var(--black);
+}
+.dropdown-content a:hover {
+    background-color: rgb(192, 190, 190);
+    color: white;
+}
+.projectBoard .cards{
+    display: flex;
+    justify-content: space-between;
+}
+.projectContainer{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;    
+}
+.projectContainer .projectListHeader {
+   display: flex;
+   justify-content: space-between;
+}
+.projectContainer .projectListHeader .addTaskButton{
+    background-color: var(--darkgrey);
+    color: var(--white);
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+.projectContainer .projectListHeader .addTaskButton span{
+    padding-right: 5px;
+}
+/* PROJECTS */
+.projectItems{
+    border: solid rgb(0, 81, 255) 2px;
+    display: flex;
+    height: 72vh;
+    width: 80vw;
+    flex-wrap: wrap;
+}
+.projectItem{
+    border: solid rgb(21, 255, 0) 2px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin: 10px;
+}
+.viewTaskButton{
+    padding: 10px;
+    background-color: gray;
+}
+.checkboxx {
+    width: 20px; /* Set the desired width */
+    height: 20px; /* Set the desired height */
+}
+/* project info */
 .projectInfo {
     position: fixed;
     top: 50%;
@@ -149,15 +162,15 @@ input.checkboxx {
     z-index: 1000;
     max-width: 80%;
     width: 400px; 
+  
 }
 
-
-.closeButton {
+#closeProjectForm {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 24px;
+    top: 0px;
+    right: 0px;
+    cursor: grabbing;
+    font-size: 10px;
     color: #888;
 }
 
@@ -165,7 +178,6 @@ input.checkboxx {
     list-style-type: none;
 
 }
-
 
 .background-overlay {
     position: fixed;
@@ -178,6 +190,7 @@ input.checkboxx {
     z-index: 999; 
     display: none; 
 }
+
 .infoBUttons{
     display: flex;
     justify-content: space-around;
@@ -185,17 +198,14 @@ input.checkboxx {
     background-color: black;
 }
 
-
 /* project assign form */
-.Container {
+.Container{
     width: 80vh;
     height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 16px;
-
     position: fixed;
     top: 50%;
     left: 50%;
@@ -206,32 +216,33 @@ input.checkboxx {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     max-width: 80%;
-    width: 400px; 
+    width: 400px;
+    gap: 16px;
 }
-
-input {
+#project-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#project-form #response{
+    color: red;
+}
+input[type=text], input[type=email], .selectprojectform {
+    width: 50%;
     display: block;
     padding: 15px 56px;
     margin: 8px;
     border-radius: 5px;
     border: solid rgb(170, 170, 170) 1px;
 }
-
-button {
+.formSubmit {
     padding: 10px 56px;
-    background-color: rgb(35, 35, 235);
+    background-color: var(--darkgrey);
     /* background-color: rgb(73, 72, 72); */
+    margin: 20px;
+    width: 80%;
     color: white;
     border-radius: 5px;
-    border: solid gray 1px;
-}
-
-
-
-@media screen and (max-width:720px) {
-    .container{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    
+    border: solid var(--darkgrey) 1px;
 }

@@ -1,213 +1,388 @@
-window.addEventListener('DOMContentLoaded', () => {
-    const projectDetails: any[] = [];
-    const projectItemsContainer = document.getElementById("projectItems") as HTMLElement;
-    const completedCard = document.getElementById('completed') as HTMLElement;
-    const uncompletedCard = document.getElementById('uncompleted') as HTMLElement;
-    const projectInfo = document.getElementById('projectInfo') as HTMLDivElement;
-    const formContainer = document.getElementById('formContainer') as HTMLDivElement;
-    const addTaskButton = document.getElementById('addTaskButton') as HTMLButtonElement;
+window.addEventListener("DOMContentLoaded", () => {
+  const projectDetails: any[] = [];
+  const projectItemsContainer = document.getElementById(
+    "projectItems"
+  ) as HTMLElement;
+  // const completedCard = document.getElementById('completed') as HTMLElement;
+  // const uncompletedCard = document.getElementById('uncompleted') as HTMLElement;
+  const projectInfo = document.getElementById("projectInfo") as HTMLDivElement;
 
+  fetch("http://localhost:4600/project/")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data: any[]) => {
+      data.forEach((project: any) => {
+        const projectItem = document.createElement("div");
+        projectItem.classList.add("projectItem");
 
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("checkboxx");
+        checkbox.id = project.projectID;
+        document.body.appendChild(checkbox);
 
-    fetch('http://localhost:4600/project/')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        const projectNameSpan = document.createElement("h1");
+        projectNameSpan.textContent = project.projectName;
+        projectNameSpan.classList.add("namespan");
+
+        const projectID = document.createElement("li");
+        projectID.textContent = project.projectID;
+
+        const buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("buttonContainer");
+
+        const viewTaskButton = document.createElement("button");
+        viewTaskButton.classList.add("viewTaskButton");
+        viewTaskButton.innerHTML = "view ";
+
+        projectItem.appendChild(projectNameSpan);
+        buttonContainer.appendChild(viewTaskButton);
+        projectItem.appendChild(checkbox);
+
+        projectItem.appendChild(buttonContainer);
+
+        projectItemsContainer.appendChild(projectItem);
+
+        const taskItem = document.createElement("li");
+        taskItem.textContent = project.projectName;
+
+        const truth = project.isCompleted;
+        console.log(`Answer: ${truth}`);
+
+        const confirmationModal = document.getElementById(
+          "confirmationModal"
+        ) as HTMLDivElement;
+        const noButton = document.getElementById(
+          "noButton"
+        ) as HTMLButtonElement;
+        const yesButton = document.getElementById(
+          "yesButton"
+        ) as HTMLButtonElement;
+
+        function handleCheckboxChange(event: { target: any }) {
+          const target = event.target;
+
+          if (target.checked) {
+            confirmationModal.style.display = "block";
+            yesButton.addEventListener("click", () => {
+              markProjectCompleted(target.id);
+
+              const projectItem = target.closest(".projectItem");
+              if (projectItem) {
+                projectItem.remove();
+              }
+              confirmationModal.style.display = "none";
+            });
+            noButton.addEventListener("click", () => {
+              target.checked = false;
+              confirmationModal.style.display = "none";
+            });
+          } else {
+          }
+        }
+
+        checkbox.addEventListener("change", handleCheckboxChange);
+
+        //  mark the project as completed
+        async function markProjectCompleted(projectID: string) {
+          try {
+            const response = await fetch(
+              "http://localhost:4600/project/updateProject",
+              {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                  projectID: projectID,
+                }),
+              }
+            );
+
+            if (response.status === 200) {
+              console.log(`Project ${projectID} marked as completed.`);
+            } else if (response.status === 404) {
+              console.log("Project not found or already completed");
+            } else {
+              console.error("Project completion update failed.");
             }
-            return response.json();
-        })
-        .then((data: any[]) => {
-            data.forEach((project: any) => {
-                const projectItem = document.createElement('div');
-                projectItem.classList.add('projectItem');
+          } catch (error) {
+            console.error("Network error:", error);
+          }
+        }
 
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.classList.add('checkboxx');
+        //view tasks
+        viewTaskButton.addEventListener("click", (e) => {
+          e.preventDefault();
+          const currentProjectID = project.projectID;
 
-                const projectNameSpan = document.createElement('span');
-                projectNameSpan.textContent = project.projectName;
+          const backgroundOverlay = document.getElementById(
+            "backgroundOverlay"
+          ) as HTMLDivElement;
+          backgroundOverlay.style.display = "block";
 
-                const projectID = document.createElement('li');
-                projectID.textContent = project.projectID;
+          projectInfo.innerHTML = "";
+          projectInfo.style.display = "block";
 
-                const buttonContainer = document.createElement('div');
-                buttonContainer.classList.add('buttonContainer');
+          const projectDetailsDiv = document.createElement("div");
 
-                const viewTaskButton = document.createElement('button');
-                viewTaskButton.classList.add('viewTaskButton');
-                viewTaskButton.innerHTML = '<i class="fas fa-eye"></i>';
+          const projectInfoButtons = document.createElement("div");
+          projectInfoButtons.classList.add("infoButtons");
 
-                projectItem.appendChild(checkbox);
-                projectItem.appendChild(projectNameSpan);
-                buttonContainer.appendChild(viewTaskButton);
-                projectItem.appendChild(buttonContainer);
+          const closeProjectInfo = document.createElement("button");
+          closeProjectInfo.textContent = "Close";
 
-                projectItemsContainer.appendChild(projectItem);
+          const deleteTaskButton = document.createElement("button");
+          deleteTaskButton.innerHTML = '<i class="fas fa-trash"></i>';
 
-                const taskItem = document.createElement('li');
-                taskItem.textContent = project.projectName;
+          const projectInfoTitle = document.createElement("h2");
+          projectInfoTitle.textContent = "Project Details";
+          projectDetailsDiv.appendChild(projectInfoTitle);
 
-                const truth = project.isCompleted;
-                console.log(`Answer: ${truth}`);
+          const projectInfoDetails = document.createElement("ul");
+          projectInfoDetails.classList.add("details");
 
-                if (truth === true) {
-                    completedCard.appendChild(taskItem);
-                } else {
-                    uncompletedCard.appendChild(taskItem);
-                }
+          let dates = new Date(project.endDate);
+          const formattedEndDate = dates.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "2-digit",
+          });
 
-                //assign task
-                addTaskButton.addEventListener('click', (e) => {
-                    formContainer.style.display = 'block'
-                    const backgroundOverlay = document.getElementById('backgroundOverlay') as HTMLDivElement;
-                    backgroundOverlay.style.display = 'block';
-
-                    const closeFormProject = document.getElementById('closeProjectForm') as HTMLButtonElement;
-                    closeFormProject.addEventListener('click', (e) => {
-                        formContainer.style.display = 'none';
-                        backgroundOverlay.style.display = 'none';
-                    });
-
-
-                    let project_name = document.getElementById('project_name') as HTMLInputElement;
-                    let project_details = document.getElementById('project_details') as HTMLInputElement;
-                    let end_date = document.getElementById('endDate') as HTMLInputElement;
-                    let employee_email = document.getElementById('email') as HTMLInputElement;
-                    let employee_name = document.getElementById('name') as HTMLInputElement;
-                    let assignError = document.getElementById('response') as HTMLElement
-
-                    let assign_form = document.getElementById('project-form') as HTMLFormElement;
-
-                    assign_form.addEventListener('submit', async (event) => {
-                        event.preventDefault();
-                        let projectName = project_name.value.trim();
-                        let projectDetails = project_details.value.trim();
-                        let endDate = end_date.value.trim();
-                        let AssignedUserName = employee_name.value.trim();
-                        let AssignedUserEmail = employee_email.value.trim();
-                        
-                       
-
-                        if (AssignedUserName === '' || AssignedUserEmail === '' || projectDetails === '' || endDate === '' || projectName === '') {
-                            assignError.textContent = 'please fill all fields'
-                            return;
-                        }
-
-                      
-
-                        try {
-                            const response = await fetch('http://localhost:4600/project/assignProject', {
-                                method: "POST",
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    "projectName":projectName,
-                                    "AssignedUserName": AssignedUserName,
-                                    "AssignedUserEmail": AssignedUserEmail,
-                                    "projectDetails": projectDetails,
-                                    "endDate": endDate
-                                })
-                            });
-
-                            if (response.ok) {
-                                const data = await response.json();
-                                console.log(data);
-                                gotoLogin();
-                            } else {
-                                const errorData = await response.json();
-                                console.log("Project Assignation failed. Server returned:", errorData);
-                                assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`
-                            }
-                        } catch (error) {
-                            const { message }: any
-                                = error
-                            console.log(message);
-
-                            console.error("An error occurred during project assignment:", error);
-
-
-                        }
-                    });
-
-                    function gotoLogin() {
-                        location.href = 'admin.html';
-                    }
-
-
-
-
-
-
-
-                })
-
-
-                viewTaskButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-
-                    const backgroundOverlay = document.getElementById('backgroundOverlay') as HTMLDivElement;
-                    backgroundOverlay.style.display = 'block';
-
-                    projectInfo.innerHTML = '';
-                    projectInfo.style.display = 'block';
-
-                    const projectDetailsDiv = document.createElement('div');
-
-                    const projectInfoButtons = document.createElement('div');
-                    projectInfoButtons.classList.add('infoButtons');
-
-                    const closeProjectInfo = document.createElement('button');
-                    closeProjectInfo.textContent = 'Close';
-
-                    const deleteTaskButton = document.createElement('button');
-                    deleteTaskButton.innerHTML = '<i class="fas fa-trash"></i>';
-
-                    const projectInfoTitle = document.createElement('h2');
-                    projectInfoTitle.textContent = 'Project Details';
-                    projectDetailsDiv.appendChild(projectInfoTitle);
-
-                    const projectInfoDetails = document.createElement('ul');
-                    projectInfoDetails.classList.add('details');
-                    projectInfoDetails.innerHTML = `
-                        <li><strong>Project ID:</strong> ${project.projectID}</li>
-                        <li><strong>Project Name:</strong> ${project.projectName}</li>
-                        <li><strong>Description:</strong> ${project.projectDescription}</li>
-                        <li><strong>End Date:</strong> ${project.endDate}</li>
-                        <li><strong>Assigned User Email:</strong> ${project.AssignedUserEmail}</li>
-                        <li><strong>Assigned User Name:</strong> ${project.AssignedUserName}</li>
-                        <li><strong>Is Completed:</strong> ${truth ? 'Yes' : 'No'}</li>
+          projectInfoDetails.innerHTML = `
+                    
+                        <li><strong>Project ID:</strong> ${
+                          project.projectID
+                        }</li>
+                        <li><strong>Project Name:</strong> ${
+                          project.projectName
+                        }</li>
+                        <li><strong>Description:</strong> ${
+                          project.projectDescription
+                        }</li>
+                        <li><strong>End Date:</strong> ${formattedEndDate}</li>
+                        <li><strong>Assigned User Email:</strong> ${
+                          project.AssignedUserEmail
+                        }</li>
+                        <li><strong>Assigned User Name:</strong> ${
+                          project.AssignedUserName
+                        }</li>
+                        <li><strong>Project Status:</strong> ${
+                          project.projectStatus
+                        }</li>
+                        <li><strong>Is Completed:</strong> ${
+                          truth ? "Yes" : "No"
+                        }</li>
                     `;
 
-                    projectDetailsDiv.appendChild(projectInfoDetails);
+          projectDetailsDiv.appendChild(projectInfoDetails);
 
-                    projectInfoButtons.appendChild(closeProjectInfo);
-                    projectInfoButtons.appendChild(deleteTaskButton);
+          projectInfoButtons.appendChild(closeProjectInfo);
+          projectInfoButtons.appendChild(deleteTaskButton);
 
-                    projectInfo.appendChild(projectDetailsDiv);
-                    projectInfo.appendChild(projectInfoButtons);
+          projectInfo.appendChild(projectDetailsDiv);
+          projectInfo.appendChild(projectInfoButtons);
 
-                    closeProjectInfo.addEventListener('click', (e) => {
-                        projectInfo.style.display = 'none';
-                        backgroundOverlay.style.display = 'none';
-                    });
-                });
+          closeProjectInfo.addEventListener("click", (e) => {
+            projectInfo.style.display = "none";
+            backgroundOverlay.style.display = "none";
+          });
 
+          //delete project
+          deleteTaskButton.addEventListener("click", async (e) => {
+            e.preventDefault();
+            alert("do you want to delete the project");
+            const deleteID = currentProjectID;
+            console.log(`this is it${deleteID}`);
 
+            try {
+              const response = await fetch(
+                "http://localhost:4600/project/deleteProject",
+                {
+                  method: "DELETE",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    deleteID: deleteID,
+                  }),
+                }
+              );
 
-
-
-            });
-
-            console.log('All Project Details:', projectDetails);
-        })
-        .catch(error => {
-            console.error('Error fetching projects:', error);
+              if (response.ok) {
+                console.log("deleted");
+              } else {
+                const errorData = await response.json();
+                console.log(
+                  `"Project deletion failed. Server returned:${errorData}`
+                );
+                // assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          });
         });
+      });
 
+      console.log("All Project Details:", projectDetails);
+    })
+    .catch((error) => {
+      console.error("Error fetching projects:", error);
+    });
+});
 
+// Fetch employees
+async function fetchEmployees() {
+  try {
+    const response = await fetch("http://localhost:4600/project/getUsers");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
 
+    const selectEmployee = document.getElementById(
+      "userName"
+    ) as HTMLSelectElement;
+    const emailInput = document.getElementById("email") as HTMLInputElement;
 
+    data.forEach((employee: { Email: string; userName: string }) => {
+      const option = document.createElement("option");
+      option.value = employee.userName;
+      option.textContent = employee.userName;
+      option.setAttribute("data-email", employee.Email);
+      selectEmployee.appendChild(option);
+    });
+
+    selectEmployee.addEventListener("change", () => {
+      const selectedOption =
+        selectEmployee.options[selectEmployee.selectedIndex];
+      const selectedUserName = selectedOption.value;
+      const selectedEmail = selectedOption.getAttribute("data-email");
+      emailInput.value = selectedEmail || "";
+    });
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+  }
+}
+
+fetchEmployees();
+
+//assign task
+
+const formContainer = document.getElementById(
+  "formContainer"
+) as HTMLDivElement;
+const addTaskButton = document.getElementById(
+  "addTaskButton"
+) as HTMLButtonElement;
+
+addTaskButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  formContainer.style.display = "block";
+  const backgroundOverlay = document.getElementById(
+    "backgroundOverlay"
+  ) as HTMLDivElement;
+  backgroundOverlay.style.display = "block";
+
+  const closeFormProject = document.getElementById(
+    "closeProjectForm"
+  ) as HTMLButtonElement;
+  closeFormProject.addEventListener("click", (e) => {
+    formContainer.style.display = "none";
+    backgroundOverlay.style.display = "none";
+  });
+
+  let selectEmployee = document.getElementById("userName") as HTMLSelectElement;
+
+  let project_name = document.getElementById(
+    "project_name"
+  ) as HTMLInputElement;
+  let project_details = document.getElementById(
+    "project_details"
+  ) as HTMLInputElement;
+  let end_date = document.getElementById("endDate") as HTMLInputElement;
+  let employee_email = document.getElementById("email") as HTMLInputElement;
+  let assignError = document.getElementById("response") as HTMLElement;
+
+  let assign_form = document.getElementById("project-form") as HTMLFormElement;
+
+  selectEmployee.addEventListener("change", (e) => {
+    let selectedOption = selectEmployee.options[selectEmployee.selectedIndex];
+    let selectedUserName = selectedOption.value;
+    let selectedEmail = selectedOption.getAttribute("email");
+  });
+
+  assign_form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    let projectName = project_name.value.trim();
+    let projectDescription = project_details.value.trim();
+    let endDate = end_date.value.trim();
+    let AssignedUserName = selectEmployee.value.trim();
+    let AssignedUserEmail = employee_email.value.trim();
+
+    if (
+      AssignedUserName === "" ||
+      AssignedUserEmail === "" ||
+      projectDescription === "" ||
+      endDate === "" ||
+      projectName === ""
+    ) {
+      assignError.textContent = "please fill all fields";
+
+      setTimeout(function () {
+        assignError.textContent = "";
+      }, 60000); // 60000 milliseconds = 60 seconds = 1 minute
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:4600/project/assignProject",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            projectName: projectName,
+            AssignedUserName: AssignedUserName,
+            AssignedUserEmail: AssignedUserEmail,
+            projectDescription: projectDescription,
+            endDate: endDate,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        assignError.textContent = "project assigned successfully";
+        assignError.style.color = "blue";
+        setTimeout(() => {
+          assignError.style.display = "none";
+        }, 3000);
+        return;
+      } else {
+        const errorData = await response.json();
+        console.log("Project Assignation failed. Server returned:", errorData);
+        assignError.textContent = `project Assignment failed :${JSON.stringify({
+          errorData,
+        })}`;
+      }
+      return;
+    } catch (error) {
+      const { message }: any = error;
+      console.log(message);
+
+      console.error("An error occurred during project assignment:", error);
+    }
+  });
 });
