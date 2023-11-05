@@ -42,9 +42,12 @@ window.addEventListener('DOMContentLoaded', () => {
             projectBriefs.appendChild(project_Assignee);
             projectBriefs.appendChild(project_Assignee_Email);
         });
+        //submit task
         const submit_Task_Button = document.querySelector('.submitTaskButton');
         submit_Task_Button.addEventListener('click', (e) => {
             alert('do you wish to submit');
+            localStorage.setItem('completedProject', JSON.stringify(user_project));
+            submit_Task_Button.style.display = 'none';
         });
     })
         .catch(error => {

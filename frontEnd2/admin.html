@@ -13,7 +13,8 @@
 <body>
     <div class="container">
         <div class="company">
-            <img src="https://st4.depositphotos.com/20523700/25935/i/450/depositphotos_259350398-stock-photo-illustration-h2o-icon.jpg" alt="Company Logo">
+            <img src="https://st4.depositphotos.com/20523700/25935/i/450/depositphotos_259350398-stock-photo-illustration-h2o-icon.jpg"
+                alt="Company Logo">
             <h1>World Waters</h1>
             <p>Safe Water</p>
             <p>Contact Information:WorldWater@company.com</p>
@@ -24,8 +25,8 @@
                 <div class="date">
                     <p id="dateDisplay">Date</p>
                 </div>
-                
-                
+
+
                 <div class="accountIcon">
                     <div class="accountDropdown">
                         <a href="#">Admin</a>
@@ -45,14 +46,14 @@
                     <div class="card">
                         <h2 style="color: blue;">Completed</h2>
                         <ul id="completed">
-                         
+
 
                         </ul>
                     </div>
                     <div class="card">
                         <h2 style="color: blue;">Uncompleted</h2>
                         <ul id="uncompleted">
-                         
+
 
                         </ul>
                     </div>
@@ -79,35 +80,44 @@
             <div class="background-overlay" id="backgroundOverlay"></div>
             <div class="Container" style="display: none;" id="formContainer">
                 <div class="projectAssign">
-                    <form  id="project-form">
+                    <form id="project-form">
                         <p id="response"></p>
 
 
                         <label>Project Name<span></span></label>
-                        <input type="text"  placeholder="project_name" id="project_name">
-            
+                        <input type="text" placeholder="project_name" id="project_name">
+
                         <label>Project Details</label>
                         <input type="text" id="project_details">
                         <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
-            
+
                         <label>End-Date</label>
                         <input type="text" id="endDate" placeholder="year-month-date">
-            
+                        <!--             
                         <label>EmployeeName<span></span></label>
                         <input type="text"  placeholder="username" id="name">
             
                         <label>Employee Email<span></span></label>
-                        <input type="email"  placeholder="example@gmail.com" id="email">
-            
-                      <button type="submit">AssignProject</button>
-                    
+                        <input type="email"  placeholder="example@gmail.com" id="email"> -->
+
+                        <label for="employee">Select an Employee</label>
+                        <select id="userName" name="employee">
+                            <option value="">Select an employee</option>
+                        </select><br>
+
+                        <label for="email">Employee Email</label>
+                        <input type="email" placeholder="example@gmail.com" id="email" readonly>
+
+
+                        <button type="submit">AssignProject</button>
+
                     </form>
-                     <button id="closeProjectForm">Close</button>
+                    <button id="closeProjectForm">Close</button>
                 </div>
-    
+
 
             </div>
-           
+
 
 
         </div>
@@ -116,15 +126,15 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 <script>
-   function updateDate() {
-    const dateElement = document.getElementById("dateDisplay");
-    const now = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = now.toLocaleDateString('en-US', options);
-    dateElement.textContent = formattedDate;
-}
-updateDate();
-setInterval(updateDate, 24 * 60 * 60 * 1000);
+    function updateDate() {
+        const dateElement = document.getElementById("dateDisplay");
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = now.toLocaleDateString('en-US', options);
+        dateElement.textContent = formattedDate;
+    }
+    updateDate();
+    setInterval(updateDate, 24 * 60 * 60 * 1000);
 
 
 </script>

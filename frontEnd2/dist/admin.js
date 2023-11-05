@@ -14,9 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const completedCard = document.getElementById('completed');
     const uncompletedCard = document.getElementById('uncompleted');
     const projectInfo = document.getElementById('projectInfo');
-    const formContainer = document.getElementById('formContainer');
-    const addTaskButton = document.getElementById('addTaskButton');
-    // const deleteTaskBUtton = document.getElementById('deleteTaskButton') as HTMLButtonElement;
     fetch('http://localhost:4600/project/')
         .then(response => {
         if (!response.ok) {
@@ -55,70 +52,9 @@ window.addEventListener('DOMContentLoaded', () => {
             else {
                 uncompletedCard.appendChild(taskItem);
             }
-            //assign task
-            addTaskButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                formContainer.style.display = 'block';
-                const backgroundOverlay = document.getElementById('backgroundOverlay');
-                backgroundOverlay.style.display = 'block';
-                const closeFormProject = document.getElementById('closeProjectForm');
-                closeFormProject.addEventListener('click', (e) => {
-                    formContainer.style.display = 'none';
-                    backgroundOverlay.style.display = 'none';
-                });
-                let project_name = document.getElementById('project_name');
-                let project_details = document.getElementById('project_details');
-                let end_date = document.getElementById('endDate');
-                let employee_email = document.getElementById('email');
-                let employee_name = document.getElementById('name');
-                let assignError = document.getElementById('response');
-                let assign_form = document.getElementById('project-form');
-                assign_form.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
-                    event.preventDefault();
-                    let projectName = project_name.value.trim();
-                    let projectDetails = project_details.value.trim();
-                    let endDate = end_date.value.trim();
-                    let AssignedUserName = employee_name.value.trim();
-                    let AssignedUserEmail = employee_email.value.trim();
-                    if (AssignedUserName === '' || AssignedUserEmail === '' || projectDetails === '' || endDate === '' || projectName === '') {
-                        assignError.textContent = 'please fill all fields';
-                        return;
-                    }
-                    try {
-                        const response = yield fetch('http://localhost:4600/project/assignProject', {
-                            method: "POST",
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                "projectName": projectName,
-                                "AssignedUserName": AssignedUserName,
-                                "AssignedUserEmail": AssignedUserEmail,
-                                "projectDetails": projectDetails,
-                                "endDate": endDate
-                            })
-                        });
-                        if (response.ok) {
-                            const data = yield response.json();
-                            console.log(data);
-                            gotoLogin();
-                        }
-                        else {
-                            const errorData = yield response.json();
-                            console.log("Project Assignation failed. Server returned:", errorData);
-                            assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`;
-                        }
-                    }
-                    catch (error) {
-                        const { message } = error;
-                        console.log(message);
-                        console.error("An error occurred during project assignment:", error);
-                    }
-                }));
-            });
             viewTaskButton.addEventListener('click', (e) => {
                 e.preventDefault();
+                const currentProjectID = project.projectID;
                 const backgroundOverlay = document.getElementById('backgroundOverlay');
                 backgroundOverlay.style.display = 'block';
                 projectInfo.innerHTML = '';
@@ -157,9 +93,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 deleteTaskButton.addEventListener('click', (e) => __awaiter(void 0, void 0, void 0, function* () {
                     e.preventDefault();
                     alert('do you want to delete the project');
-                    const deleteID = project.projectID;
+                    const deleteID = currentProjectID;
                     console.log(`this is it${deleteID}`);
-                    const userRole = 'admin';
                     try {
                         const response = yield fetch('http://localhost:4600/project/deleteProject', {
                             method: "DELETE",
@@ -168,8 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
                                 'Content-type': 'application/json'
                             },
                             body: JSON.stringify({
-                                "deleteID": deleteID,
-                                "userRole": userRole
+                                "deleteID": deleteID
                             })
                         });
                         if (response.ok) {
@@ -177,12 +111,13 @@ window.addEventListener('DOMContentLoaded', () => {
                         }
                         else {
                             const errorData = yield response.json();
-                            console.log("Project deletion failed. Server returned:", errorData);
+                            console.log(`"Project deletion failed. Server returned:${errorData}`);
                             // assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`
                         }
+                        console.log("fvfvf");
                     }
                     catch (error) {
-                        console.error;
+                        console.error(error);
                     }
                 }));
             });
@@ -192,4 +127,112 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
         console.error('Error fetching projects:', error);
     });
+});
+// Fetch employees and populate the dropdown
+function fetchEmployees() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch('http://localhost:4600/project/getUsers');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = yield response.json();
+            const selectEmployee = document.getElementById('userName');
+            const emailInput = document.getElementById('email');
+            data.forEach((employee) => {
+                const option = document.createElement('option');
+                option.value = employee.userName; // Set the value to the user name
+                option.textContent = employee.userName;
+                option.setAttribute('data-email', employee.Email); // Add the email as a data attribute
+                selectEmployee.appendChild(option);
+            });
+            selectEmployee.addEventListener('change', () => {
+                const selectedOption = selectEmployee.options[selectEmployee.selectedIndex];
+                const selectedUserName = selectedOption.value;
+                const selectedEmail = selectedOption.getAttribute('data-email');
+                // Update the email input with the selected user's email
+                emailInput.value = selectedEmail || '';
+            });
+        }
+        catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    });
+}
+// Call the function to fetch and populate the employees dropdown
+fetchEmployees();
+//assign task
+const formContainer = document.getElementById('formContainer');
+const addTaskButton = document.getElementById('addTaskButton');
+addTaskButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    formContainer.style.display = 'block';
+    const backgroundOverlay = document.getElementById('backgroundOverlay');
+    backgroundOverlay.style.display = 'block';
+    const closeFormProject = document.getElementById('closeProjectForm');
+    closeFormProject.addEventListener('click', (e) => {
+        formContainer.style.display = 'none';
+        backgroundOverlay.style.display = 'none';
+    });
+    let selectEmployee = document.getElementById('userName');
+    let project_name = document.getElementById('project_name');
+    let project_details = document.getElementById('project_details');
+    let end_date = document.getElementById('endDate');
+    let employee_email = document.getElementById('email');
+    let assignError = document.getElementById('response');
+    let assign_form = document.getElementById('project-form');
+    selectEmployee.addEventListener('change', (e) => {
+        let selectedOption = selectEmployee.options[selectEmployee.selectedIndex];
+        let selectedUserName = selectedOption.value;
+        let selectedEmail = selectedOption.getAttribute('email');
+    });
+    assign_form.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
+        event.preventDefault();
+        let projectName = project_name.value.trim();
+        let projectDescription = project_details.value.trim();
+        let endDate = end_date.value.trim();
+        let AssignedUserName = selectEmployee.value.trim();
+        let AssignedUserEmail = employee_email.value.trim();
+        if (AssignedUserName === '' || AssignedUserEmail === '' || projectDescription === '' || endDate === '' || projectName === '') {
+            assignError.textContent = 'please fill all fields';
+            return;
+        }
+        try {
+            const response = yield fetch('http://localhost:4600/project/assignProject', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "projectName": projectName,
+                    "AssignedUserName": AssignedUserName,
+                    "AssignedUserEmail": AssignedUserEmail,
+                    "projectDescription": projectDescription,
+                    "endDate": endDate
+                })
+            });
+            if (response.ok) {
+                const data = yield response.json();
+                console.log(data);
+                assignError.textContent = 'project assigned successfully';
+                assignError.style.color = 'blue';
+                setTimeout(() => {
+                    assignError.style.display = 'none';
+                }, 3000);
+                return;
+            }
+            else {
+                const errorData = yield response.json();
+                console.log("Project Assignation failed. Server returned:", errorData);
+                assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`;
+            }
+            return;
+        }
+        catch (error) {
+            const { message } = error;
+            console.log(message);
+            console.error("An error occurred during project assignment:", error);
+        }
+    }));
 });
