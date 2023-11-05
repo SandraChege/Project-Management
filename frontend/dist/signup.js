@@ -14,7 +14,7 @@ let phone = document.getElementById('phone_no');
 let pass = document.getElementById('password');
 let confirm_password = document.getElementById('confirm_password');
 let registerError = document.getElementById('response');
-let reg_form = document.getElementById('signup-form');
+let reg_form = document.getElementById("signup-form");
 reg_form.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
     let userName = full_name.value.trim();
@@ -24,6 +24,10 @@ reg_form.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0,
     let confirm_pass = confirm_password.value.trim();
     if (userName === '' || email === '' || phone_no === '' || password === '' || confirm_pass === '') {
         registerError.textContent = 'please fill all fields';
+        return;
+    }
+    if (password.length < 8) {
+        registerError.textContent = "Password must be at least 8 characters";
         return;
     }
     if (password !== confirm_pass) {
@@ -62,5 +66,5 @@ reg_form.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0,
     }
 }));
 function gotoLogin() {
-    location.href = 'index.html';
+    location.href = 'signin.html';
 }

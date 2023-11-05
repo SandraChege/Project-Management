@@ -5,7 +5,7 @@ let pass = document.getElementById('password') as HTMLInputElement;
 let confirm_password = document.getElementById('confirm_password') as HTMLInputElement;
 let registerError= document.getElementById('response') as HTMLElement
 
-let reg_form = document.getElementById('signup-form') as HTMLFormElement;
+let reg_form = document.getElementById("signup-form") as HTMLFormElement;
 
 reg_form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -21,6 +21,10 @@ reg_form.addEventListener('submit', async (event) => {
         return; 
     }
 
+    if (password.length < 8) {
+        registerError.textContent = "Password must be at least 8 characters";
+        return;
+    }
     if (password !== confirm_pass) {
         registerError.textContent = 'Passwords do not match'
         return; 
@@ -62,5 +66,5 @@ reg_form.addEventListener('submit', async (event) => {
 });
 
 function gotoLogin() {
-    location.href = 'index.html';
+    location.href = 'signin.html';
 }
