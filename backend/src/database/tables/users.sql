@@ -2,7 +2,6 @@
 -- -- -- -- alter database Project_Management MODIFY name  = projectManagementSystem
 -- -- -- -- use projectManagementSystem
 
-
 -- CREATE TABLE Users (
 --     userID VARCHAR(300) not null PRIMARY KEY,
 --     userName VARCHAR(255) not null,
