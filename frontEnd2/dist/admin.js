@@ -128,7 +128,7 @@ window.addEventListener('DOMContentLoaded', () => {
         console.error('Error fetching projects:', error);
     });
 });
-// Fetch employees and populate the dropdown
+// Fetch employees 
 function fetchEmployees() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -141,16 +141,15 @@ function fetchEmployees() {
             const emailInput = document.getElementById('email');
             data.forEach((employee) => {
                 const option = document.createElement('option');
-                option.value = employee.userName; // Set the value to the user name
+                option.value = employee.userName;
                 option.textContent = employee.userName;
-                option.setAttribute('data-email', employee.Email); // Add the email as a data attribute
+                option.setAttribute('data-email', employee.Email);
                 selectEmployee.appendChild(option);
             });
             selectEmployee.addEventListener('change', () => {
                 const selectedOption = selectEmployee.options[selectEmployee.selectedIndex];
                 const selectedUserName = selectedOption.value;
                 const selectedEmail = selectedOption.getAttribute('data-email');
-                // Update the email input with the selected user's email
                 emailInput.value = selectedEmail || '';
             });
         }
@@ -159,7 +158,6 @@ function fetchEmployees() {
         }
     });
 }
-// Call the function to fetch and populate the employees dropdown
 fetchEmployees();
 //assign task
 const formContainer = document.getElementById('formContainer');
