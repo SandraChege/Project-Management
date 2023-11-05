@@ -42,13 +42,47 @@ window.addEventListener('DOMContentLoaded', () => {
             projectBriefs.appendChild(project_Assignee);
             projectBriefs.appendChild(project_Assignee_Email);
         });
-        //submit task
-        const submit_Task_Button = document.querySelector('.submitTaskButton');
-        submit_Task_Button.addEventListener('click', (e) => {
-            alert('do you wish to submit');
-            localStorage.setItem('completedProject', JSON.stringify(user_project));
-            submit_Task_Button.style.display = 'none';
+        //project status
+        const statusDiv = document.querySelector(".status");
+        const statusOptions = ["Started", "Halfway", "Completed"];
+        statusOptions.forEach((status) => {
+            const radioBtn = document.createElement("input");
+            radioBtn.type = "radio";
+            radioBtn.name = "status";
+            radioBtn.value = status;
+            const label = document.createElement("label");
+            label.textContent = status;
+            statusDiv.appendChild(radioBtn);
+            statusDiv.appendChild(label);
+            statusDiv.appendChild(document.createElement("br"));
+            radioBtn.addEventListener("click", () => {
+                const selectedStatus = radioBtn.value;
+                updateStatusOnServer(selectedStatus, userEmail);
+            });
         });
+        function updateStatusOnServer(newStatus, userEmail) {
+            fetch("http://localhost:4600/project/projectStatus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    AssignedUserEmail: userEmail,
+                    NewStatus: newStatus,
+                }),
+            })
+                .then((response) => {
+                if (response.ok) {
+                    console.log("Project status updated successfully.");
+                }
+                else {
+                    console.error("Failed to update project status.");
+                }
+            })
+                .catch((error) => {
+                console.error("Error updating project status:", error);
+            });
+        }
     })
         .catch(error => {
         console.error('Error fetching projects:', error);

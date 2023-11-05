@@ -84,7 +84,7 @@ Content-Type: application/json
 
 {
    
-    "projectID":"ba736ff8-a0e5-4188-be1b-897e70636ec3"
+    "projectID":"1da4856b-edde-47f2-90d4-603913e26b7f"
    
 }
 
@@ -92,6 +92,21 @@ Content-Type: application/json
 #fetch All Users
 
 get http://localhost:4600/project/getUsers
+
+
+###
+#user updates status
+
+post http://localhost:4600/project/projectStatus
+Content-Type: application/json
+
+{
+   
+    "AssignedUserEmail":"dankinyi99@gmail.com",
+    "NewStatus":"halfway there"
+   
+}
+
 
 
 

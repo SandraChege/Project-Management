@@ -1,10 +1,11 @@
+
 window.addEventListener('DOMContentLoaded', () => {
     const userEmail = localStorage.getItem('user_email');
-    if(userEmail){
+    if (userEmail) {
         console.log(userEmail)
-    }else{
+    } else {
         console.log('userEmail not found');
-        
+
     }
     const projectDetails: any[] = [];
 
@@ -16,8 +17,8 @@ window.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then((data: any[]) => {
-            projectDetails.push(...data); 
-            const user_project = projectDetails.filter(project=>project.AssignedUserEmail === userEmail)
+            projectDetails.push(...data);
+            const user_project = projectDetails.filter(project => project.AssignedUserEmail === userEmail)
             console.log(user_project);
 
             const projectBriefs = document.querySelector('.projectItem') as HTMLElement;
@@ -25,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 const projectName = document.createElement('li');
                 projectName.classList.add('projectName');
-                projectName.textContent = project.projectName; 
+                projectName.textContent = project.projectName;
 
                 const projectDescription = document.createElement('li');
                 projectName.classList.add('projectDetails');
@@ -34,38 +35,79 @@ window.addEventListener('DOMContentLoaded', () => {
                 const project_Assignee = document.createElement('li');
                 projectName.classList.add('projectDetails');
                 project_Assignee.textContent = `Assigned User: ${project.AssignedUserName}`
-               
+
                 const project_End_Date = document.createElement('li');
                 projectName.classList.add('projectDetails');
                 project_End_Date.textContent = `Project End Date:   ${project.endDate}`
 
 
-                const project_Assignee_Email= document.createElement('li');
+                const project_Assignee_Email = document.createElement('li');
                 projectName.classList.add('projectDetails');
                 project_Assignee_Email.textContent = `Assigned User Email:  ${project.AssignedUserEmail}`
-               
+
                 projectBriefs.appendChild(projectName);
                 projectBriefs.appendChild(projectDescription);
                 projectBriefs.appendChild(project_End_Date)
                 projectBriefs.appendChild(project_Assignee)
                 projectBriefs.appendChild(project_Assignee_Email)
-                
+
             });
 
-            //submit task
-            const submit_Task_Button = document.querySelector('.submitTaskButton') as HTMLButtonElement
-            submit_Task_Button.addEventListener('click',(e)=>{
-                alert('do you wish to submit');
-                localStorage.setItem('completedProject', JSON.stringify(user_project));
-                submit_Task_Button.style.display = 'none'
-              
-            })
-    
+            //project status
+            const statusDiv = document.querySelector(".status") as HTMLDivElement;
+            const statusOptions = ["Started", "Halfway", "Completed"];
+
+            statusOptions.forEach((status) => {
+                const radioBtn = document.createElement("input");
+                radioBtn.type = "radio";
+                radioBtn.name = "status";
+                radioBtn.value = status;
+
+                const label = document.createElement("label");
+                label.textContent = status;
+
+                statusDiv.appendChild(radioBtn);
+                statusDiv.appendChild(label);
+
+                statusDiv.appendChild(document.createElement("br"));
+
+                radioBtn.addEventListener("click", () => {
+                    const selectedStatus = radioBtn.value;
+
+                    updateStatusOnServer(selectedStatus,userEmail);
+                    
+                });
+            });
+
+            function updateStatusOnServer(newStatus: string,userEmail: string | null) {
+                fetch("http://localhost:4600/project/projectStatus", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        AssignedUserEmail: userEmail,
+                        NewStatus: newStatus,
+                    }),
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            console.log("Project status updated successfully.");
+                        } else {
+                            console.error("Failed to update project status.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error updating project status:", error);
+                    });
+            }
+
+
         })
         .catch(error => {
             console.error('Error fetching projects:', error);
         });
-        
+
 });
 
 

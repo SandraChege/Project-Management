@@ -152,3 +152,30 @@ export const getAllUsers = async (req:Request, res:Response) => {
     }
 };
 
+
+// user updates project status
+export const updateStatus = async (req: Request, res: Response) => {
+    try {
+        const { AssignedUserEmail, NewStatus } = req.body;
+        const pool = await mssql.connect(sqlConfig);
+        const updateStatus = await pool.request()
+            .input("AssignedUserEmail", mssql.VarChar, AssignedUserEmail)
+            .input("NewStatus", mssql.VarChar, NewStatus)
+            .execute('UpdateProjectStatus');
+
+        if (updateStatus.rowsAffected[0] > 0) {
+            return res.json({
+                message: "Project status updated successfully"
+            });
+        } else {
+            return res.status(400).json({
+                error: "Project status update failed",
+                details: "An error occurred while updating the project status."
+            });
+        }
+    } catch (error) {
+        console.error('Error updating project status:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+

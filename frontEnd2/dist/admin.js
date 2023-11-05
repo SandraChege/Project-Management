@@ -28,6 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.classList.add('checkboxx');
+            checkbox.id = 'uniqueCheckboxId';
             const projectNameSpan = document.createElement('span');
             projectNameSpan.textContent = project.projectName;
             const projectID = document.createElement('li');
@@ -52,6 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
             else {
                 uncompletedCard.appendChild(taskItem);
             }
+            //view tasks
             viewTaskButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 const currentProjectID = project.projectID;
@@ -71,13 +73,21 @@ window.addEventListener('DOMContentLoaded', () => {
                 projectDetailsDiv.appendChild(projectInfoTitle);
                 const projectInfoDetails = document.createElement('ul');
                 projectInfoDetails.classList.add('details');
+                let dates = new Date(project.endDate);
+                const formattedEndDate = dates.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: '2-digit'
+                });
                 projectInfoDetails.innerHTML = `
+                    
                         <li><strong>Project ID:</strong> ${project.projectID}</li>
                         <li><strong>Project Name:</strong> ${project.projectName}</li>
                         <li><strong>Description:</strong> ${project.projectDescription}</li>
-                        <li><strong>End Date:</strong> ${project.endDate}</li>
+                        <li><strong>End Date:</strong> ${formattedEndDate}</li>
                         <li><strong>Assigned User Email:</strong> ${project.AssignedUserEmail}</li>
                         <li><strong>Assigned User Name:</strong> ${project.AssignedUserName}</li>
+                        <li><strong>Project Status:</strong> ${project.projectStatus}</li>
                         <li><strong>Is Completed:</strong> ${truth ? 'Yes' : 'No'}</li>
                     `;
                 projectDetailsDiv.appendChild(projectInfoDetails);

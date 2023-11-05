@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
+
     const projectDetails: any[] = [];
     const projectItemsContainer = document.getElementById("projectItems") as HTMLElement;
     const completedCard = document.getElementById('completed') as HTMLElement;
@@ -21,6 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.classList.add('checkboxx');
+                checkbox.id = 'uniqueCheckboxId'; 
 
                 const projectNameSpan = document.createElement('span');
                 projectNameSpan.textContent = project.projectName;
@@ -54,7 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     uncompletedCard.appendChild(taskItem);
                 }
 
-
+               //view tasks
                 viewTaskButton.addEventListener('click', (e) => {
                     e.preventDefault();
                     const currentProjectID = project.projectID;
@@ -72,6 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     const closeProjectInfo = document.createElement('button');
                     closeProjectInfo.textContent = 'Close';
+                    
 
                     const deleteTaskButton = document.createElement('button');
                     deleteTaskButton.innerHTML = '<i class="fas fa-trash"></i>';
@@ -82,15 +85,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     const projectInfoDetails = document.createElement('ul');
                     projectInfoDetails.classList.add('details');
+
+                    let dates = new Date(project.endDate)
+                    const formattedEndDate = dates.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: '2-digit'
+                    });
+                  
                     projectInfoDetails.innerHTML = `
+                    
                         <li><strong>Project ID:</strong> ${project.projectID}</li>
                         <li><strong>Project Name:</strong> ${project.projectName}</li>
                         <li><strong>Description:</strong> ${project.projectDescription}</li>
-                        <li><strong>End Date:</strong> ${project.endDate}</li>
+                        <li><strong>End Date:</strong> ${formattedEndDate}</li>
                         <li><strong>Assigned User Email:</strong> ${project.AssignedUserEmail}</li>
                         <li><strong>Assigned User Name:</strong> ${project.AssignedUserName}</li>
+                        <li><strong>Project Status:</strong> ${project.projectStatus}</li>
                         <li><strong>Is Completed:</strong> ${truth ? 'Yes' : 'No'}</li>
                     `;
+  
 
                     projectDetailsDiv.appendChild(projectInfoDetails);
 
@@ -150,11 +164,8 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error fetching projects:', error);
         });
-
+        
 });
-
-
-
 
 // Fetch employees 
 async function fetchEmployees() {
