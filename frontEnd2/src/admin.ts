@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const completedCard = document.getElementById('completed') as HTMLElement;
     const uncompletedCard = document.getElementById('uncompleted') as HTMLElement;
     const projectInfo = document.getElementById('projectInfo') as HTMLDivElement;
-    
+
 
     fetch('http://localhost:4600/project/')
         .then(response => {
@@ -22,7 +22,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.classList.add('checkboxx');
-                checkbox.id = 'uniqueCheckboxId'; 
+                checkbox.id = project.projectID;
+                document.body.appendChild(checkbox);
 
                 const projectNameSpan = document.createElement('span');
                 projectNameSpan.textContent = project.projectName;
@@ -56,7 +57,65 @@ window.addEventListener('DOMContentLoaded', () => {
                     uncompletedCard.appendChild(taskItem);
                 }
 
-               //view tasks
+                
+                const confirmationModal = document.getElementById('confirmationModal') as HTMLDivElement;
+                const noButton = document.getElementById('noButton') as HTMLButtonElement;
+                const yesButton = document.getElementById('yesButton') as HTMLButtonElement;
+
+           
+                function handleCheckboxChange(event: { target: any; }) {
+                    const target = event.target;
+
+                    if (target.checked) {
+                        confirmationModal.style.display = 'block';
+                        yesButton.addEventListener('click', () => {
+                            markProjectCompleted(target.id);
+                            
+                            const projectItem = target.closest('.projectItem');
+                            if (projectItem) {
+                                projectItem.remove();
+                            }
+                            confirmationModal.style.display = 'none';
+                        });
+                        noButton.addEventListener('click', () => {
+                            target.checked = false;
+                            confirmationModal.style.display = 'none';
+                        });
+                    } else {
+
+                    }
+                }
+
+
+                checkbox.addEventListener('change', handleCheckboxChange);
+
+                //  mark the project as completed
+                async function markProjectCompleted(projectID: string) {
+                    try {
+                        const response = await fetch('http://localhost:4600/project/updateProject', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                projectID: projectID,
+                            }),
+                        });
+
+                        if (response.status === 200) {
+                            console.log(`Project ${projectID} marked as completed.`);
+                        } else if (response.status === 404) {
+                            console.log('Project not found or already completed');
+                        } else {
+                            console.error('Project completion update failed.');
+                        }
+                    } catch (error) {
+                        console.error('Network error:', error);
+                    }
+                }
+
+                //view tasks
                 viewTaskButton.addEventListener('click', (e) => {
                     e.preventDefault();
                     const currentProjectID = project.projectID;
@@ -74,7 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     const closeProjectInfo = document.createElement('button');
                     closeProjectInfo.textContent = 'Close';
-                    
+
 
                     const deleteTaskButton = document.createElement('button');
                     deleteTaskButton.innerHTML = '<i class="fas fa-trash"></i>';
@@ -92,7 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         month: 'long',
                         day: '2-digit'
                     });
-                  
+
                     projectInfoDetails.innerHTML = `
                     
                         <li><strong>Project ID:</strong> ${project.projectID}</li>
@@ -104,7 +163,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         <li><strong>Project Status:</strong> ${project.projectStatus}</li>
                         <li><strong>Is Completed:</strong> ${truth ? 'Yes' : 'No'}</li>
                     `;
-  
+
 
                     projectDetailsDiv.appendChild(projectInfoDetails);
 
@@ -135,7 +194,7 @@ window.addEventListener('DOMContentLoaded', () => {
                                 },
                                 body: JSON.stringify({
                                     "deleteID": deleteID
-                                   
+
                                 })
                             });
 
@@ -147,7 +206,7 @@ window.addEventListener('DOMContentLoaded', () => {
                                 // assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`
                             }
                             console.log("fvfvf");
-                            
+
 
                         } catch (error) {
                             console.error(error)
@@ -164,7 +223,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error fetching projects:', error);
         });
-        
+
 });
 
 // Fetch employees 
@@ -181,9 +240,9 @@ async function fetchEmployees() {
 
         data.forEach((employee: { Email: string; userName: string }) => {
             const option = document.createElement('option');
-            option.value = employee.userName; 
+            option.value = employee.userName;
             option.textContent = employee.userName;
-            option.setAttribute('data-email', employee.Email); 
+            option.setAttribute('data-email', employee.Email);
             selectEmployee.appendChild(option);
         });
 
@@ -219,7 +278,7 @@ addTaskButton.addEventListener('click', (e) => {
     });
 
     let selectEmployee = document.getElementById('userName') as HTMLSelectElement;
-  
+
     let project_name = document.getElementById('project_name') as HTMLInputElement;
     let project_details = document.getElementById('project_details') as HTMLInputElement;
     let end_date = document.getElementById('endDate') as HTMLInputElement;
@@ -230,9 +289,9 @@ addTaskButton.addEventListener('click', (e) => {
 
     selectEmployee.addEventListener('change', (e) => {
         let selectedOption = selectEmployee.options[selectEmployee.selectedIndex];
-        let selectedUserName = selectedOption.value; 
-        let selectedEmail = selectedOption.getAttribute('email'); 
-    
+        let selectedUserName = selectedOption.value;
+        let selectedEmail = selectedOption.getAttribute('email');
+
     });
 
     assign_form.addEventListener('submit', async (event) => {
@@ -268,13 +327,13 @@ addTaskButton.addEventListener('click', (e) => {
                 const data = await response.json();
                 console.log(data);
                 assignError.textContent = 'project assigned successfully'
-                assignError.style.color = 'blue' 
+                assignError.style.color = 'blue'
                 setTimeout(() => {
-                    assignError.style.display = 'none' 
-                    
-                },3000);
+                    assignError.style.display = 'none'
+
+                }, 3000);
                 return;
-               
+
             } else {
                 const errorData = await response.json();
                 console.log("Project Assignation failed. Server returned:", errorData);

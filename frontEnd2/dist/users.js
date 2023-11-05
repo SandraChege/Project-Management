@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
             projectName.textContent = project.projectName;
             const projectDescription = document.createElement('li');
             projectName.classList.add('projectDetails');
-            projectDescription.textContent = project.projectDescription;
+            projectDescription.textContent = `Project Description :${project.projectDescription}`;
             const project_Assignee = document.createElement('li');
             projectName.classList.add('projectDetails');
             project_Assignee.textContent = `Assigned User: ${project.AssignedUserName}`;
@@ -42,9 +42,9 @@ window.addEventListener('DOMContentLoaded', () => {
             projectBriefs.appendChild(project_Assignee);
             projectBriefs.appendChild(project_Assignee_Email);
         });
-        //project status
+        //project status update
         const statusDiv = document.querySelector(".status");
-        const statusOptions = ["Started", "Halfway", "Completed"];
+        const statusOptions = ["Started", "Halfway", "Completed", "Pending"];
         statusOptions.forEach((status) => {
             const radioBtn = document.createElement("input");
             radioBtn.type = "radio";

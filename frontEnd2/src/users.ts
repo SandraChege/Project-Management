@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 const projectDescription = document.createElement('li');
                 projectName.classList.add('projectDetails');
-                projectDescription.textContent = project.projectDescription
+                projectDescription.textContent = `Project Description :${project.projectDescription}`
 
                 const project_Assignee = document.createElement('li');
                 projectName.classList.add('projectDetails');
@@ -53,9 +53,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             });
 
-            //project status
+            //project status update
             const statusDiv = document.querySelector(".status") as HTMLDivElement;
-            const statusOptions = ["Started", "Halfway", "Completed"];
+            const statusOptions = ["Started", "Halfway", "Completed","Pending"];
 
             statusOptions.forEach((status) => {
                 const radioBtn = document.createElement("input");
@@ -77,6 +77,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     updateStatusOnServer(selectedStatus,userEmail);
                     
                 });
+
+              
             });
 
             function updateStatusOnServer(newStatus: string,userEmail: string | null) {
@@ -101,6 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         console.error("Error updating project status:", error);
                     });
             }
+            
 
 
         })

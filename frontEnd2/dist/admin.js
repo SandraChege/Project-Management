@@ -28,7 +28,8 @@ window.addEventListener('DOMContentLoaded', () => {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.classList.add('checkboxx');
-            checkbox.id = 'uniqueCheckboxId';
+            checkbox.id = project.projectID;
+            document.body.appendChild(checkbox);
             const projectNameSpan = document.createElement('span');
             projectNameSpan.textContent = project.projectName;
             const projectID = document.createElement('li');
@@ -52,6 +53,59 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             else {
                 uncompletedCard.appendChild(taskItem);
+            }
+            const confirmationModal = document.getElementById('confirmationModal');
+            const noButton = document.getElementById('noButton');
+            const yesButton = document.getElementById('yesButton');
+            function handleCheckboxChange(event) {
+                const target = event.target;
+                if (target.checked) {
+                    confirmationModal.style.display = 'block';
+                    yesButton.addEventListener('click', () => {
+                        markProjectCompleted(target.id);
+                        const projectItem = target.closest('.projectItem');
+                        if (projectItem) {
+                            projectItem.remove();
+                        }
+                        confirmationModal.style.display = 'none';
+                    });
+                    noButton.addEventListener('click', () => {
+                        target.checked = false;
+                        confirmationModal.style.display = 'none';
+                    });
+                }
+                else {
+                }
+            }
+            checkbox.addEventListener('change', handleCheckboxChange);
+            //  mark the project as completed
+            function markProjectCompleted(projectID) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    try {
+                        const response = yield fetch('http://localhost:4600/project/updateProject', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                projectID: projectID,
+                            }),
+                        });
+                        if (response.status === 200) {
+                            console.log(`Project ${projectID} marked as completed.`);
+                        }
+                        else if (response.status === 404) {
+                            console.log('Project not found or already completed');
+                        }
+                        else {
+                            console.error('Project completion update failed.');
+                        }
+                    }
+                    catch (error) {
+                        console.error('Network error:', error);
+                    }
+                });
             }
             //view tasks
             viewTaskButton.addEventListener('click', (e) => {
