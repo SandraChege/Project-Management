@@ -7,7 +7,7 @@ import project_router from './routes/projectRoutes'
 
 
 dotenv.config()
-const port = process.env.PORT || 4500
+const port = process.env.PORT || 4700
 const app = express()
 app.use(json())
 app.use(cors())

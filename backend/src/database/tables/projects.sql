@@ -11,8 +11,9 @@
 --     isCompleted BIT DEFAULT 0,
     
 -- )
+SELECT * FROM Projects
 ALTER TABLE Projects
-ADD projectStatus VARCHAR(200) DEFAULT 'pending';
+ADD isAssigned BIT DEFAULT 0;
 
 -- Update existing rows to set the default value
 -- UPDATE Projects

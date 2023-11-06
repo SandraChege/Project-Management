@@ -9,46 +9,52 @@ import { userLoginValidationSchema, userRegisterValidationSchema } from "../vali
 import { ExtendedUser } from "../middleware/tokenVerify";
 
 
-//register user
-export const registerUser = async(req:Request,res:Response)=>{
+// Import necessary dependencies and modules
+
+export const registerUser = async (req: Request, res: Response) => {
     try {
-        let {userName,email,password,phone_no} = req.body
+        let { userName, email, password, phone_no } = req.body;
 
         const { error } = userRegisterValidationSchema.validate(req.body);
-        
+
         if (error) {
-            
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        let userID = v4()
-        const hashedPwd = await bcrypt.hash(password,5)
+        let userID = v4();
+        const hashedPwd = await bcrypt.hash(password, 5);
 
-        const pool = await mssql.connect(sqlConfig)
-        let data =   await pool.request()
-        .input("userID",mssql.VarChar,userID)
-        .input("userName",mssql.VarChar,userName)
-        .input("email",mssql.VarChar,email)
-        .input("phone_no",mssql.VarChar,phone_no)
-        .input("password",mssql.VarChar,hashedPwd)
-        .execute('registerUser')
+        const pool = await mssql.connect(sqlConfig);
 
-        console.log(data);
-        if(error){
-            res.json({
-                message:error
-            })
+        // Check if the email already exists in the database
+        const checkEmailQuery = `SELECT 1 FROM Users WHERE email = @email`;
+        const emailCheckResult = await pool.request()
+            .input("email", mssql.VarChar, email)
+            .query(checkEmailQuery);
+
+        if (emailCheckResult.recordset.length > 0) {
+            return res.status(400).json({ error: 'Email already exists. User not registered.' });
         }
-        
+
+        // If email doesn't exist, proceed with user registration
+        const registerQuery = `EXEC registerUser @userID, @userName, @email, @phone_no, @password`;
+
+        const data = await pool.request()
+            .input("userID", mssql.VarChar, userID)
+            .input("userName", mssql.VarChar, userName)
+            .input("email", mssql.VarChar, email)
+            .input("phone_no", mssql.VarChar, phone_no)
+            .input("password", mssql.VarChar, hashedPwd)
+            .query(registerQuery);
+
         return res.status(200).json({
-            message:'User registered successfully'
-        })
-        
+            message: 'User registered successfully'
+        });
+
     } catch (error) {
         return res.json({
-            error:error
-        })
-        
+            error: error
+        });
     }
 }
 
@@ -135,3 +141,7 @@ export const checkUserDetails = async (req:ExtendedUser, res:Response)=>{
 }
 
 
+
+// reload user page
+
+//assign again a completed project

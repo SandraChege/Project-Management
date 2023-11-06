@@ -26,8 +26,8 @@ drop COLUMN AssignedProjectID
 -- set role = 'admin'
 -- where email = 'michealvenum007@gmail.com'
 
--- delete from Users 
--- where email = 'michealvenum007@gmail.com'
+delete from Users 
+where email = 'mikevenum9@gmail.com'
 
 
 
