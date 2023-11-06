@@ -16,14 +16,14 @@
 --     @AssignedUserName VARCHAR(250)
 -- AS
 -- BEGIN
---     -- Check if the user exists in the Users table
+--     
 --     IF EXISTS (
 --         SELECT 1
 --         FROM Users
 --         WHERE email = @AssignedUserEmail
 --     )
 --     BEGIN
---         -- Check if the user is already assigned to a project that is not completed
+--         
 --         IF EXISTS (
 --             SELECT 1
 --             FROM Projects
@@ -35,7 +35,7 @@
 --         END
 --         ELSE
 --         BEGIN
---             -- Insert the project if the user is not assigned to any active project
+--             
 --             INSERT INTO Projects (projectID, projectName, projectDescription, endDate, AssignedUserEmail, AssignedUserName)
 --             VALUES (@projectID, @projectName, @projectDescription, @endDate, @AssignedUserEmail, @AssignedUserName);
 

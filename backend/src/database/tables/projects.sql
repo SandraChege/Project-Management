@@ -9,13 +9,15 @@
 --     AssignedUserName VARCHAR(250),
 --     createdDateTime DATETIME DEFAULT GETDATE(),
 --     isCompleted BIT DEFAULT 0,
+    --  projectStatus varchar(250) DEFAULT 'pending',
+
     
 -- )
 SELECT * FROM Projects
 ALTER TABLE Projects
 ADD isAssigned BIT DEFAULT 0;
 
--- Update existing rows to set the default value
+
 -- UPDATE Projects
 -- SET projectStatus = 'pending'
 -- WHERE projectStatus IS NULL;
