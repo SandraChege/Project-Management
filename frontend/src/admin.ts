@@ -39,11 +39,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 viewTaskButton.classList.add('viewTaskButton');
                 viewTaskButton.innerHTML = 'view ';
 
-                
+
                 projectItem.appendChild(projectNameSpan);
                 buttonContainer.appendChild(viewTaskButton);
                 projectItem.appendChild(checkbox);
-                
+
                 projectItem.appendChild(buttonContainer);
 
                 projectItemsContainer.appendChild(projectItem);
@@ -54,24 +54,24 @@ window.addEventListener('DOMContentLoaded', () => {
                 const truth = project.isCompleted;
                 console.log(`Answer: ${truth}`);
 
-                
+
                 const confirmationModal = document.getElementById('confirmationModal') as HTMLDivElement;
                 const noButton = document.getElementById('noButton') as HTMLButtonElement;
                 const yesButton = document.getElementById('yesButton') as HTMLButtonElement;
 
-           
+
                 function handleCheckboxChange(event: { target: any; }) {
                     const target = event.target;
-                   
+
 
                     if (target.checked) {
                         confirmationModal.style.display = 'block';
-                         const backgroundOverlay = document.getElementById('backgroundOverlay') as HTMLDivElement;
-                         backgroundOverlay.style.display = 'block';
+                        const backgroundOverlay = document.getElementById('backgroundOverlay') as HTMLDivElement;
+                        backgroundOverlay.style.display = 'block';
                         yesButton.addEventListener('click', () => {
                             markProjectCompleted(target.id);
                             backgroundOverlay.style.display = 'none';
-                            
+
                             const projectItem = target.closest('.projectItem');
                             if (projectItem) {
                                 projectItem.remove();
@@ -171,7 +171,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         <li><strong>Project Status:</strong> ${project.projectStatus}</li>
                         <li><strong>Is Completed:</strong> ${truth ? 'Yes' : 'No'}</li>
                     `;
-                  
+
 
 
                     projectDetailsDiv.appendChild(deleteMessage)
@@ -187,68 +187,70 @@ window.addEventListener('DOMContentLoaded', () => {
                         projectInfo.style.display = 'none';
                         backgroundOverlay.style.display = 'none';
                     });
-                     let assignError = document.getElementById('response') as HTMLElement
 
-                     const deleteModal = document.getElementById('deleteModal') as HTMLDivElement;
-                     const nodeleteButton = document.getElementById('noDeleteButton') as HTMLButtonElement;
-                     const yesdeleteButton = document.getElementById('yesDeleteButton') as HTMLButtonElement;
-                     const deletebackgroundOverlay = document.getElementById('deletebackgroundOverlay') as HTMLDivElement;
-                     
-                     
-                     deleteTaskButton.addEventListener('click', async (e) => {
-                         e.preventDefault();
-                         projectInfo.style.display = 'none';
-                         deleteModal.style.display = 'block';
-                         deletebackgroundOverlay.style.display = 'block';
-                     });
-                     
-                    
-                     nodeleteButton.addEventListener('click', (e) => {
-                         e.preventDefault();
-                         deleteModal.style.display = 'none';
-                         deletebackgroundOverlay.style.display = 'none';
-                         backgroundOverlay.style.display = 'none';
-                     });
-                     
-                    
-                     yesdeleteButton.addEventListener('click', async () => {
-                         const deleteID = currentProjectID;
-                     
-                         try {
-                             const response = await fetch('http://localhost:4600/project/deleteProject', {
-                                 method: 'DELETE',
-                                 headers: {
-                                     'Accept': 'application/json',
-                                     'Content-type': 'application/json'
-                                 },
-                                 body: JSON.stringify({
-                                     'deleteID': deleteID
-                                 })
-                             });
-                     
-                             if (response.ok) {
-                                 deleteMessage.textContent = 'Project deleted successfully';
-                                 deleteMessage.style.color = 'blue';
-                                 setTimeout(() => {
-                                     deleteMessage.textContent = '';
-                                 }, 3000);
-                                 console.log('Deleted');
-                             } else {
-                                 const errorData = await response.json();
-                                 console.log(`Project deletion failed. Server returned: ${errorData}`);
-                                
-                             }
-                         } catch (error) {
-                             console.error(error);
-                           
-                         }
-                     
-                        
-                         deleteModal.style.display = 'none';
-                         deletebackgroundOverlay.style.display = 'none';
-                         backgroundOverlay.style.display = 'none';
-                     });
-                     
+                    //delete project
+                    let assignError = document.getElementById('response') as HTMLElement
+
+                    const deleteModal = document.getElementById('deleteModal') as HTMLDivElement;
+                    const nodeleteButton = document.getElementById('noDeleteButton') as HTMLButtonElement;
+                    const yesdeleteButton = document.getElementById('yesDeleteButton') as HTMLButtonElement;
+                    const deletebackgroundOverlay = document.getElementById('deletebackgroundOverlay') as HTMLDivElement;
+
+
+                    deleteTaskButton.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        projectInfo.style.display = 'none';
+                        deleteModal.style.display = 'block';
+                        deletebackgroundOverlay.style.display = 'block';
+                    });
+
+
+                    nodeleteButton.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        deleteModal.style.display = 'none';
+                        deletebackgroundOverlay.style.display = 'none';
+                        backgroundOverlay.style.display = 'none';
+                    });
+
+
+                    yesdeleteButton.addEventListener('click', async () => {
+                        const deleteID = currentProjectID;
+
+                        try {
+                            const response = await fetch('http://localhost:4600/project/deleteProject', {
+                                method: 'DELETE',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    'deleteID': deleteID
+                                })
+                            });
+
+                            if (response.ok) {
+                                deleteMessage.textContent = 'Project deleted successfully';
+                                deleteMessage.style.color = 'blue';
+                                setTimeout(() => {
+                                    deleteMessage.textContent = '';
+                                }, 3000);
+                                console.log('Deleted');
+                            } else {
+                                const errorData = await response.json();
+                                console.log(`Project deletion failed. Server returned: ${errorData}`);
+
+                            }
+                        } catch (error) {
+                            console.error(error);
+
+                        }
+
+
+                        deleteModal.style.display = 'none';
+                        deletebackgroundOverlay.style.display = 'none';
+                        backgroundOverlay.style.display = 'none';
+                    });
+
 
                 });
 
@@ -375,11 +377,11 @@ addTaskButton.addEventListener('click', (e) => {
                 console.log("Project Assignation failed. Server returned:", errorData);
                 assignError.textContent = `project Assignment failed`;
                 console.log(errorData);
-                
+
                 assignError.style.color = 'red'
                 setTimeout(() => {
                     assignError.textContent = ''
-                    
+
                 }, 5000);
             }
             return;

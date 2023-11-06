@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 user.textContent = project.AssignedUserName
 
                 const statusDiv = document.querySelector('.status') as HTMLDivElement;
-                const statusOptions = ['pending', 'Started', 'Halfway', 'Completed'];
+                const statusOptions = ['pending', 'started', 'Halfway', 'completed'];
                 const NoProject = document.querySelector('.noProjects') as HTMLDivElement
 
                 statusOptions.forEach((status) => {

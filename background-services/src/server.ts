@@ -6,13 +6,13 @@ import { assignedProjectEmail } from './mailservices/useremail';
 
 
 const app = express();
-
 const run = async()=>{
    
     cron.schedule('*/10 * * * * *', () => {
         console.log('check new user');
          welcomeUser();
          assignedProjectEmail();
+         
     });
 
 }

@@ -9,7 +9,7 @@ import { userLoginValidationSchema, userRegisterValidationSchema } from "../vali
 import { ExtendedUser } from "../middleware/tokenVerify";
 
 
-// Import necessary dependencies and modules
+
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
@@ -26,7 +26,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
         const pool = await mssql.connect(sqlConfig);
 
-        // Check if the email already exists in the database
+        
         const checkEmailQuery = `SELECT 1 FROM Users WHERE email = @email`;
         const emailCheckResult = await pool.request()
             .input("email", mssql.VarChar, email)
@@ -36,7 +36,7 @@ export const registerUser = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Email already exists. User not registered.' });
         }
 
-        // If email doesn't exist, proceed with user registration
+        
         const registerQuery = `EXEC registerUser @userID, @userName, @email, @phone_no, @password`;
 
         const data = await pool.request()
