@@ -1,147 +1,93 @@
-*{
-    margin: 0;
+* {
     padding: 0;
+    margin: 0;
 }
 :root{
-    --darkblue:rgb(7, 20, 199);
-    --lightblue:#0e8afd;
+    --beige:#DDD0C8;
+    --darkgrey:#323232;
     --white:#fff;
-    --grey:#e0e0e0;
-    --darkgrey:#8a8888;
-    --green:#13b913;
+    --black:#000;
 }
-.container{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
+.container {
+    display: grid;
+    grid-template-areas: 'company dashboard';
     grid-template-rows: 1fr;
-    grid-template-areas: "company dashboard";
+    grid-template-columns: 15%  85%;
     width: 100vw;
     height: 100vh;
 }
-.company{
+.company {
     grid-area: company;
-    width: 20vw;
-    background-color: var(--darkblue);
-    display: flex;
-    flex-direction: column;
+    background-color: var(--darkgrey);
+    color: var(--white);
 }
-.company .imgdiv{
-    display: flex;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-}
-.company .imgdiv img{
-    width: 20%;
-    padding-right: 10px;
-}
-.company div .heading{
+.company h1{
     font-size: 2rem;
-    color: var(--white);
 }
-.company p{
+.company div{
+    margin-top: 3rem;
+}
+.company div button{
+    margin-top: 2rem;
+    background-color: var(--darkgrey);
+    border: none;
+    outline: none;
+}
+.company div button a{
     color: var(--white);
-    font-size: 1.8rem;
+    text-decoration: none;
 }
 .dashboard{
     grid-area: dashboard;
-    width: 80vw;
-    background-color: var(--grey);
+    background-color: var(--beige);
     display: flex;
     flex-direction: column;
+    padding: 1rem;
 }
 .dashboard .nav{
     display: flex;
     justify-content: space-between;
-    background-color: var(--white);
-    padding: 1rem;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .dashboard .nav .date{
-   display: flex;
-   justify-content: center;
-   align-items: center;
+    font-size: 1.3rem;
 }
-.accountIcon{
-    background-color: red;
+.dashboard .accountIcon{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row-reverse;
+    padding-right: 10px;
+}
+.dashboard .accountIcon .p-icon{
+    font-size: 40px;
+}
+.dashboard .accountIcon .accountDropdown a{
+    text-decoration: none;
+    font-size: 1.3rem;
+    color: var(--black);
 }
 .dropdown-content {
-    display: none; 
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
-.popcontainer{
-    padding: 1.5rem;
-}
-.dashboard .projectBoard h2{
-    color: var(--darkgrey);
-}
-.dashboard .projectBoard .cards{
+.projectContainer .projectListHeader{
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
 }
-.dashboard .projectBoard .cards .card{
-    background-color: var(--white);
-    width: 40%;
-    border-radius: 10px;
-    box-shadow: 5px 5px 5px var(--darkgrey);
-    padding: 0.2rem;
+.projectContainer .projectItem{
+    margin-top: 10px;
 }
-.dashboard .projectBoard .cards .card1{
-    border-left: 0.3rem solid var(--darkblue);
-}
-.dashboard .projectBoard .cards .card1 h2{
-    color: var(--lightblue);
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-.dashboard .projectBoard .cards .card2{
-    border-left: 0.3rem solid var(--green);
-}
-.dashboard .projectBoard .cards .card2 h2{
-    color: var(--green);
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-.dashboard .popcontainer .projectContainer{
-    margin-top: 2rem;
-}
-.dashboard .popcontainer .projectContainer .projectListHeader{
-    display: flex;
-    justify-content: space-between;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-.dashboard .popcontainer .projectContainer .projectListHeader h2{
-    color: var(--darkblue);
-}
-.dashboard .popcontainer .projectContainer .projectListHeader .addTaskButton{
-    background-color: var(--darkblue);
+.projectContainer .projectItem .submitTaskButton{
+    padding: 10px;
+    background-color: var(--darkgrey);
     color: var(--white);
-    border-radius: 10px;
-    padding: 0.5rem;
-    border: 1px solid var(--darkblue);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    float: right;
 }
-.dashboard .popcontainer .projectContainer .projectListHeader .addTaskButton .addicon{
-   font-size: 1rem;
-   color: var(--white);
-   font-size: 1.2rem;
-   padding-right: 2px;
-}
-.dashboard .popcontainer .projectContainer .projectItems{
-    margin: 0.5rem;
-}
-.dashboard .popcontainer .projectContainer .projectItem{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.2rem;
-}
-.dashboard .popcontainer .projectContainer .projectItem .buttonContainer button{
-    padding: 0.5rem;   
-    border: none;
-    font-size: 1.2rem;
+.projectContainer .projectItem .submitTaskButton .fas{
+    padding-right: 10px;
 }
