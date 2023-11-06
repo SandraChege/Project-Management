@@ -119,7 +119,7 @@ export const singleProject = async (req: Request, res: Response) => {
   }
 };
 
-//Mark project Completed
+// Mark project Completed
 export const projectCompleted = async (req: Request, res: Response) => {
   try {
     const { projectID } = req.body;
@@ -130,15 +130,23 @@ export const projectCompleted = async (req: Request, res: Response) => {
       .execute("projectCompleted");
     console.log(completedProject);
 
-    return res.status(500).json({
-      message: "project update successfully",
-    });
+    // Check if any rows were affected; if so, consider it a success
+    if (completedProject.rowsAffected[0] > 0) {
+      return res.status(200).json({
+        message: "Project updated successfully",
+      });
+    } else {
+      return res.status(404).json({
+        message: "Project not found or already completed",
+      });
+    }
   } catch (error) {
     return res.status(500).json({
       message: error,
     });
   }
 };
+
 //fetchALl Users
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
@@ -175,5 +183,31 @@ export const updateStatus = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error updating project status:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//get project status
+export const getProjectStatus = async (req: Request, res: Response) => {
+  try {
+    const { AssignedUserEmail } = req.body;
+    const pool = await mssql.connect(sqlConfig);
+    const getStatus = await pool
+      .request()
+      .input("AssignedUserEmail", mssql.VarChar, AssignedUserEmail)
+      .execute("getProjectStatus");
+
+    if (getStatus.rowsAffected[0] > 0) {
+      return res.json({
+        message: "Project status fetched successfully",
+      });
+    } else {
+      return res.status(400).json({
+        error: "Project status fetching failed",
+        details: "An error occurred while fetching the project status.",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetchin project status:", error);
+    res.status(500).json({ error: error });
   }
 };

@@ -56,8 +56,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 const target = event.target;
                 if (target.checked) {
                     confirmationModal.style.display = "block";
+                    const backgroundOverlay = document.getElementById("backgroundOverlay");
+                    backgroundOverlay.style.display = "block";
                     yesButton.addEventListener("click", () => {
                         markProjectCompleted(target.id);
+                        backgroundOverlay.style.display = "none";
                         const projectItem = target.closest(".projectItem");
                         if (projectItem) {
                             projectItem.remove();
@@ -66,6 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     });
                     noButton.addEventListener("click", () => {
                         target.checked = false;
+                        backgroundOverlay.style.display = "none";
                         confirmationModal.style.display = "none";
                     });
                 }
@@ -111,14 +115,19 @@ window.addEventListener("DOMContentLoaded", () => {
                 projectInfo.innerHTML = "";
                 projectInfo.style.display = "block";
                 const projectDetailsDiv = document.createElement("div");
+                projectDetailsDiv.classList.add("projectDetails");
                 const projectInfoButtons = document.createElement("div");
                 projectInfoButtons.classList.add("infoButtons");
                 const closeProjectInfo = document.createElement("button");
+                closeProjectInfo.classList.add("closeProjectInfo");
                 closeProjectInfo.textContent = "Close";
+                let deleteMessage = document.createElement("p");
                 const deleteTaskButton = document.createElement("button");
-                deleteTaskButton.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteTaskButton.classList.add("deleteTaskButton");
+                deleteTaskButton.innerHTML = "Delete";
                 const projectInfoTitle = document.createElement("h2");
                 projectInfoTitle.textContent = "Project Details";
+                projectInfoTitle.classList.add("infoTitle");
                 projectDetailsDiv.appendChild(projectInfoTitle);
                 const projectInfoDetails = document.createElement("ul");
                 projectInfoDetails.classList.add("details");
@@ -139,6 +148,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         <li><strong>Project Status:</strong> ${project.projectStatus}</li>
                         <li><strong>Is Completed:</strong> ${truth ? "Yes" : "No"}</li>
                     `;
+                projectDetailsDiv.appendChild(deleteMessage);
                 projectDetailsDiv.appendChild(projectInfoDetails);
                 projectInfoButtons.appendChild(closeProjectInfo);
                 projectInfoButtons.appendChild(deleteTaskButton);
@@ -148,12 +158,25 @@ window.addEventListener("DOMContentLoaded", () => {
                     projectInfo.style.display = "none";
                     backgroundOverlay.style.display = "none";
                 });
-                //delete project
+                let assignError = document.getElementById("response");
+                const deleteModal = document.getElementById("deleteModal");
+                const nodeleteButton = document.getElementById("noDeleteButton");
+                const yesdeleteButton = document.getElementById("yesDeleteButton");
+                const deletebackgroundOverlay = document.getElementById("deletebackgroundOverlay");
                 deleteTaskButton.addEventListener("click", (e) => __awaiter(void 0, void 0, void 0, function* () {
                     e.preventDefault();
-                    alert("do you want to delete the project");
+                    projectInfo.style.display = "none";
+                    deleteModal.style.display = "block";
+                    deletebackgroundOverlay.style.display = "block";
+                }));
+                nodeleteButton.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    deleteModal.style.display = "none";
+                    deletebackgroundOverlay.style.display = "none";
+                    backgroundOverlay.style.display = "none";
+                });
+                yesdeleteButton.addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
                     const deleteID = currentProjectID;
-                    console.log(`this is it${deleteID}`);
                     try {
                         const response = yield fetch("http://localhost:4600/project/deleteProject", {
                             method: "DELETE",
@@ -166,17 +189,24 @@ window.addEventListener("DOMContentLoaded", () => {
                             }),
                         });
                         if (response.ok) {
-                            console.log("deleted");
+                            deleteMessage.textContent = "Project deleted successfully";
+                            deleteMessage.style.color = "blue";
+                            setTimeout(() => {
+                                deleteMessage.textContent = "";
+                            }, 3000);
+                            console.log("Deleted");
                         }
                         else {
                             const errorData = yield response.json();
-                            console.log(`"Project deletion failed. Server returned:${errorData}`);
-                            // assignError.textContent = `project Assignment failed :${JSON.stringify({ errorData })}`
+                            console.log(`Project deletion failed. Server returned: ${errorData}`);
                         }
                     }
                     catch (error) {
                         console.error(error);
                     }
+                    deleteModal.style.display = "none";
+                    deletebackgroundOverlay.style.display = "none";
+                    backgroundOverlay.style.display = "none";
                 }));
             });
         });
@@ -255,9 +285,6 @@ addTaskButton.addEventListener("click", (e) => {
             endDate === "" ||
             projectName === "") {
             assignError.textContent = "please fill all fields";
-            setTimeout(function () {
-                assignError.textContent = "";
-            }, 60000); // 60000 milliseconds = 60 seconds = 1 minute
             return;
         }
         try {
@@ -288,9 +315,12 @@ addTaskButton.addEventListener("click", (e) => {
             else {
                 const errorData = yield response.json();
                 console.log("Project Assignation failed. Server returned:", errorData);
-                assignError.textContent = `project Assignment failed :${JSON.stringify({
-                    errorData,
-                })}`;
+                assignError.textContent = `project Assignment failed`;
+                console.log(errorData);
+                assignError.style.color = "red";
+                setTimeout(() => {
+                    assignError.textContent = "";
+                }, 5000);
             }
             return;
         }

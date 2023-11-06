@@ -1,16 +1,17 @@
 use projectManagementSystem
 select * from Projects
-CREATE TABLE Projects (
-    projectID VARCHAR(300) PRIMARY KEY,
-    projectName VARCHAR(250),
-    projectDescription VARCHAR(500),
-    endDate DATE,
-    AssignedUserEmail VARCHAR(250) UNIQUE,
-    AssignedUserName VARCHAR(250),
-    createdDateTime DATETIME DEFAULT GETDATE(),
-    isCompleted BIT DEFAULT 0,
+-- CREATE TABLE Projects (
+--     projectID VARCHAR(300) PRIMARY KEY,
+--     projectName VARCHAR(250),
+--     projectDescription VARCHAR(500),
+--     endDate DATE,
+--     AssignedUserEmail VARCHAR(250) UNIQUE,
+--     AssignedUserName VARCHAR(250),
+--     createdDateTime DATETIME DEFAULT GETDATE(),
+--     isCompleted BIT DEFAULT 0,
     
-)
+-- )
+drop table Projects
 ALTER TABLE Projects
 ADD projectStatus VARCHAR(200) DEFAULT 'pending';
 

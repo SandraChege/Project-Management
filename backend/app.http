@@ -2,10 +2,10 @@ post http://localhost:4600/user/register
 Content-Type: application/json
 
 {
-    "userName":"Michael Otieno",
-    "email":"mikevenum9@gmail.com",
+    "userName":"Sandra",
+    "email":"sandracgege@gmail.com",
     "password":"379226",
-    "phone_no":"0703142454"
+    "phone_no":"0703142954"
 }
 
 
@@ -43,7 +43,7 @@ Content-Type: application/json
     "projectName": "BackgroundSerices",
     "projectDescription": "build company chatbot",
     "endDate": "2023-11-9",
-    "AssignedUserEmail": "cylvonnen@gmail.com",  
+    "AssignedUserEmail": "sandracgege@gmail.com",  
     "AssignedUserName": "Joshua Ochieng"  
 }
 

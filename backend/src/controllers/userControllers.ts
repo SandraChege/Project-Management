@@ -1,10 +1,14 @@
 import { Request, Response } from "express";
 import mssql from "mssql";
 import bcrypt from "bcrypt";
+
 import jwt from "jsonwebtoken";
 import { v4 } from "uuid";
 import { sqlConfig } from "../config/sqlConfig";
-import {userLoginValidationSchema, userRegisterValidationSchema,} from "../validators/userValidators";
+import {
+  userLoginValidationSchema,
+  userRegisterValidationSchema,
+} from "../validators/userValidators";
 import { ExtendedUser } from "../middleware/tokenVerify";
 
 //register user

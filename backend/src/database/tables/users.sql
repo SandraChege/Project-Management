@@ -20,10 +20,10 @@ drop COLUMN AssignedProjectID
 -- -- -- --  
 -- -- -- drop table Users
 
---created the admin
--- update Users 
--- set role = 'admin'
--- where email = 'michealvenum007@gmail.com'
+-- created the admin
+update Users 
+set role = 'admin'
+where email = 'mikevenum9@gmail.com'
 
 -- delete from Users 
 -- where email = 'michealvenum007@gmail.com'
